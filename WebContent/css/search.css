@@ -1,0 +1,19 @@
+a:hover{
+	text-decoration: none;
+} 
+
+.mb-3{
+	margin:0 !important;
+	padding:auto !important;
+}
+
+.pie_progress {
+      width: 160px;
+      margin: 10px auto;
+   }
+ @media all and (max-width: 768px) {
+      .pie_progress {
+        width: 80%;
+        max-width: 300px;
+      }
+    }

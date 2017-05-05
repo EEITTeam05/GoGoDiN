@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="message.Model.MessageVO" table="MessageList">
+
+		<id name="MesId" column="MesId">
+			<generator class="identity" />
+		</id>
+		<property name="ReceivedAccount" column="ReceivedAccount" />
+		<property name="SendAccount" column="SendAccount" />
+		<property name="Message" column="Message" />
+		<property name="isRead" column="isRead"/>
+		<property name="sendtime" column="sendtime"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,272 @@
+
+
+USE            GoGoDiN
+
+
+DROP TABLE     OrderTable
+
+DROP TABLE     FavoriteTable
+
+DROP TABLE     RestPhoto
+
+DROP TABLE     RestTable
+
+DROP TABLE     ShopTable
+
+DROP TABLE     MemberList
+
+DROP TABLE     MessageList
+
+DROP TABLE     AdminList
+
+
+CREATE TABLE MemberList (
+
+     MemId              INT PRIMARY KEY IDENTITY(1,1),
+
+     MemAccount         VARCHAR(50),
+
+     MemPswd            VARCHAR(20),
+
+     MemName            VARCHAR(20),
+
+     Sex                INT not null,
+
+     Birthday           DATE,
+
+     Email              VARCHAR(25),
+
+     MLineId            VARCHAR(20),
+
+     MemTel             VARCHAR(20),
+
+     MemAddr            VARCHAR(30),
+
+     MemberImage        VARBINARY(MAX),
+
+     fileName           VARCHAR(20),
+
+     status             INT
+ )
+
+INSERT INTO MemberList 
+
+VALUES 
+
+('didi','520','臭弟弟',1,'2015-05-20','didi@yahoo.com.tw','didi520','02-5201314','淡水區', null, null,0),
+
+('snoopy','123','史小比',1,'1990-05-26','abc@yahoo.com.tw','abc123','02-0494582','大安區', null, null,0),
+
+( 'kitty','456','凱小蒂',0,'1986-03-13','def@yahoo.com.tw','abc456','02-8825252','中山區', null, null,0),
+
+( 'micky','789','米小奇',1,'1992-07-01','ghi@yahoo.com.tw','abc789','02-4532789','信義區', null, null,0);
+
+
+
+CREATE TABLE ShopTable(
+
+     ShopId             INT PRIMARY KEY IDENTITY(1,1),
+
+     ShopAccount        VARCHAR(10),
+
+     ShopPswd           VARCHAR(12),
+
+     ShopName           VARCHAR(20),
+
+     ShopIdd            VARCHAR(10),
+
+     ShopTel            VARCHAR(15),
+
+     ShopEmail          VARCHAR(30),
+
+     SLineId            VARCHAR(20),
+
+	 status             INT
+)
+
+INSERT INTO ShopTable
+
+VALUES
+
+('shop1','shop1','克萊兒','1234567890','28965475','gikig@gmail.com','hollo',0),
+
+('shop2','shop2','唐娜','1234567890','25465856','giqqig@gmail.com','world',0),
+
+('shop3','shop3','奧古斯特','1234567890','26547852','jkkig@gmail.com','ayaya',0)
+
+
+
+CREATE TABLE RestTable(
+
+     RestId             INT PRIMARY KEY IDENTITY(1,1),
+
+     ShopId             INT references ShopTable(ShopId) ,
+
+     RestName           VARCHAR(12),
+
+     RestTel            VARCHAR(10),
+
+     Restaddr           VARCHAR(50),
+
+     EIN                INT,
+
+     RestStart          time(7),
+
+     RestEnd            time(7),
+
+     RestRate           INT,
+
+     RestNum            INT,
+
+     RestImage          VARBINARY(MAX),
+
+     fileName           VARCHAR(20),
+
+	 brief              VARCHAR(300),
+
+	 status             INT,
+
+	 money				INT
+)
+
+INSERT INTO RestTable 
+
+VALUES
+
+(1,'莉莉','23657894','台北市大安區復興南路二段235號科技大樓站','26325356','12:00','19:00','5','50',null,null,null,0,299),
+
+(2,'茉莉','23657894','台北市大安區復興南路二段235號科技大樓站','24125632','13:00','20:00','5','50',null,null,null,0,399),
+
+(3,'茱莉','23657894','台北市大安區復興南路二段235號科技大樓站','12546856','12:00','23:00','5','50',null,null,null,0,499),
+
+(1,'茱莉','23657894','台北市大安區復興南路二段235號科技大樓站','12546856','12:00','23:00','5','50',null,null,null,0,599);
+
+CREATE TABLE RestPhoto(
+
+     RePhotoId           INT PRIMARY KEY IDENTITY(1,1),
+
+     RestId              INT references RestTable(RestId) ,
+
+     RestImage1          VARBINARY(MAX),
+
+     fileName1           VARCHAR(20),
+     
+     RestImage2          VARBINARY(MAX),
+
+     fileName2           VARCHAR(20),
+     
+     RestImage3          VARBINARY(MAX),
+
+     fileName3           VARCHAR(20)
+
+)
+
+INSERT INTO RestPhoto 
+values
+(1,null,null,null,null,null,null),
+(2,null,null,null,null,null,null),
+(3,null,null,null,null,null,null),
+(4,null,null,null,null,null,null)
+
+
+
+CREATE TABLE FavoriteTable
+
+(
+
+     FavoriteId          INT PRIMARY KEY IDENTITY(1,1) not null,
+
+	 MemId               INT references MemberList (MemId),
+
+     RestId              INT references RestTable(RestId) ,
+
+     AddTime             dateTime null
+		
+)
+
+
+
+CREATE TABLE OrderTable(
+
+    OrderNum            INT PRIMARY KEY IDENTITY(1,1) not null,
+
+    MemberId            INT references MemberList (MemId),
+
+    ShopId              INT references ShopTable(ShopId) ,
+
+    RestId   		    INT references RestTable(RestId) ,
+	
+    OrderDate            date not null,
+    
+	OrderTime            time(7) not null,
+
+    Pnum                INT null,
+
+    BidTime             dateTime null,
+    
+	isRate 				tinyint null,
+	
+	Rate                INT null,
+
+	status              INT
+)
+
+INSERT INTO OrderTable 
+values
+(1,1,1,'2017-04-23','17:00',1,sysdatetime(),0,0,0),
+(2,1,1,'2017-04-24','18:00',2,sysdatetime(),1,77,0),
+(3,1,1,'2017-04-25','19:00',3,sysdatetime(),0,0,0),
+(4,1,1,'2017-04-26','20:00',4,sysdatetime(),1,78,0),
+(1,2,2,'2017-04-25','21:00',5,sysdatetime(),0,0,0),
+(2,2,2,'2017-04-26','22:00',6,sysdatetime(),0,0,0),
+(3,2,2,'2017-04-27','17:00',7,sysdatetime(),1,87,0),
+(4,2,2,'2017-04-28','18:00',8,sysdatetime(),1,97,0),
+(1,2,2,'2017-04-29','19:00',9,sysdatetime(),0,0,0),
+(2,3,3,'2017-04-30','20:00',8,sysdatetime(),1,57,0),
+(3,3,3,'2017-05-01','21:00',7,sysdatetime(),0,0,0),
+(4,3,3,'2017-05-02','22:00',6,sysdatetime(),1,47,0)
+
+
+
+CREATE TABLE MessageList(
+	MesId INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+	ReceivedAccount varchar(25),
+	SendAccount varchar(25),
+	Message varchar (250) NULL,
+	isRead tinyint null,
+	sendtime datetime null
+)
+
+
+
+CREATE TABLE [dbo].[AdminList](
+	[AdminId] [int] IDENTITY(1,1) NOT NULL,
+	[AdminName] [varchar](16) NULL,
+	[AdminAcc] [varchar](16) NULL,
+	[AdminPswd] [varchar](16) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[AdminId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+INSERT INTO adminlist 
+values
+('管理員','admin','admin')
+
+
+
+
+SELECT * FROM MemberList
+
+SELECT * FROM ShopTable
+
+SELECT * FROM RestTable
+
+SELECT * FROM OrderTable
+
+SELECT * FROM MessageList
+
+SELECT * FROM FavoriteTable
+
+SELECT * FROM RestPhoto

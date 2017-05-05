@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.favorite.Model.FavoriteVO" table="FavoriteTable" >
+        
+        <id name="FavoriteId" column="FavoriteId">
+            <generator class="identity"/>
+        </id>      
+        
+         <many-to-one name="memVO" class="com.member.Model.MemberListVO" lazy="false">
+        	<column name="MemId"></column>
+        </many-to-one>  
+        
+        <many-to-one name="restVO" class="com.rest.Model.RestVO" lazy="false">
+        	<column name="RestId"></column>
+        </many-to-one>
+        
+        <property name="AddTime" column="AddTime" />            
+        
+    </class>
+</hibernate-mapping>

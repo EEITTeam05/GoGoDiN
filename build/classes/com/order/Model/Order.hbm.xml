@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.order.Model.OrderVO" table="OrderTable" >
+        
+        <id name="OrderNum" column="OrderNum">
+            <generator class="identity"/>
+        </id>        
+        <many-to-one name="restVO" class="com.rest.Model.RestVO" lazy="false">
+        	<column name="RestId"></column>
+        </many-to-one>
+        <many-to-one name="memVO" class="com.member.Model.MemberListVO" lazy="false">
+        	<column name="MemberId"></column>
+        </many-to-one>
+        <property name="ShopId" column="ShopId" />
+        <property name="OrderDate" column="OrderDate" />
+        <property name="OrderTime" column="OrderTime" />
+        <property name="Pnum" column="Pnum" />
+        <property name="BidTime" column="BidTime" />            
+        <property name="isRate" column="isRate" />
+        <property name="Rate" column="Rate" />
+    </class>
+</hibernate-mapping>

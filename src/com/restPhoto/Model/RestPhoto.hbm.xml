@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.restPhoto.Model.RestPhotoVO" table="RestPhoto" >
+        
+        <id name="RePhotoId" column="RePhotoId">
+            <generator class="identity"/>
+        </id>
+        <property name="RestId" column="RestId" />
+        <property name="RestImage1" column="RestImage1" />
+        <property name="fileName1" column="fileName1" />
+        <property name="RestImage2" column="RestImage2" />
+        <property name="fileName2" column="fileName2" />
+        <property name="RestImage3" column="RestImage3" />
+        <property name="fileName3" column="fileName3" />
+         
+        
+    </class>
+</hibernate-mapping>

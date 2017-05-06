@@ -28,6 +28,8 @@ import com.rest.Model.RestVO;
 import com.restPhoto.Model.RestPhotoService;
 import com.restPhoto.Model.RestPhotoVO;
 import com.search.Model.SearchService;
+import com.ticket.model.TicketService;
+import com.ticket.model.TicketVO;
 
 import hibernate.util.BigImportentHibernate;
 
@@ -77,6 +79,10 @@ public class GetImageFromDB extends HttpServlet {
 						data = restPhotoVO.getRestImage3();
 					break;
 				}
+		}else if (type.equalsIgnoreCase("ticketlist")){
+			TicketService tkt = new TicketService();
+			TicketVO tktVO = tkt.getOrder(new Integer(sid));
+			data = tktVO.getTktImage();
 		}
 		
 		

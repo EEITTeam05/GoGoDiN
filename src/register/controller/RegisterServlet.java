@@ -88,9 +88,6 @@ public class RegisterServlet extends HttpServlet {
 			LineID = request.getParameter("MlineId");
 			fileName = request.getParameter("fileName");	
 			
-			String img = request.getParameter("Image");
-			File fb = new File(img);
-			data = request.getParameter("Image").getBytes();
 			
 //			is = new ByteArrayInputStream(request.getParameter("Image").getBytes());
 //			ImagesIo io = new ImagesIo();
@@ -129,10 +126,7 @@ public class RegisterServlet extends HttpServlet {
 							email = value;
 						} else if (fldName.equalsIgnoreCase("mlineid")) {
 							LineID = value;
-						} else if (fldName.equalsIgnoreCase("Image")) {
-							data = value.getBytes();
-
-						}
+						} 
 					} else {// 代表不是null就是使用者要輸入欄位的類型是檔案,不是一般輸入的文字數字唷!
 						fileName = getFileName(p);
 

@@ -9,7 +9,26 @@ public class ShopVO {
 	private String ShopTel;
 	private String ShopEmail;
 	private String SlineId;
+	private byte[] ShopImage;
+	private String fileName;
 	private Integer Status;
+	
+
+	public byte[] getShopImage() {
+		return ShopImage;
+	}
+
+	public void setShopImage(byte[] shopImage) {
+		ShopImage = shopImage;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	public Integer getShopId() {
 		return ShopId;

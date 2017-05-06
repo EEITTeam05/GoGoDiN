@@ -15,7 +15,7 @@ public class ShopService {
 	
 	//新增
 	public ShopVO addShop(String ShopAccount, String ShopPswd, String ShopName,
-			String ShopIdd, String ShopTel, String ShopEmail, String slineId,Integer status) throws SQLException {
+			String ShopIdd, String ShopTel, String ShopEmail, String slineId,Integer status,byte[] image,String filename) throws SQLException {
 		ShopVO shopVO = new ShopVO();
 		
 		shopVO.setShopAccount(ShopAccount);
@@ -26,6 +26,8 @@ public class ShopService {
 		shopVO.setShopEmail(ShopEmail);
 		shopVO.setSlineId(slineId);
 		shopVO.setStatus(status);
+		shopVO.setShopImage(image);
+		shopVO.setFileName(filename);
 		dao.insert(shopVO);
 		loginService ls = new loginService();
 		ls.addNewShop(shopVO);
@@ -35,7 +37,7 @@ public class ShopService {
 	//修改
 	public ShopVO update(Integer ShopId, String ShopAccount,
 			String ShopPswd, String ShopName, String ShopIdd, String ShopTel, String ShopEmail, String slineId,Integer status
-			) throws SQLException {
+			,byte[] image,String filename) throws SQLException {
 		ShopVO shopVO = new ShopVO();
 		shopVO.setShopId(ShopId);
 		shopVO.setShopAccount(ShopAccount);
@@ -46,6 +48,8 @@ public class ShopService {
 		shopVO.setShopEmail(ShopEmail);
 		shopVO.setSlineId(slineId);
 		shopVO.setStatus(status);
+		shopVO.setShopImage(image);
+		shopVO.setFileName(filename);
 		dao.update(shopVO);
 		
 		return dao.findByPrimaryKey(ShopId);

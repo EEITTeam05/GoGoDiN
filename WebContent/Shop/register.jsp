@@ -78,6 +78,13 @@ table th {
 				</td>
 			</tr>
 			<tr>
+				<th>照片：</th>
+				<td> 
+					<Input type="file" size="40" class="fieldWidth" style="width: 480px;"  name="file1"><BR>
+		     		 <font color="red" size="-1">${MsgMap.errPicture}</font>
+				</td>
+			</tr>
+			<tr>
 				<td colspan="2"><input type="submit" name="submit" id="submit"
 					value="儲存" /> <input type="reset" name="cancel" id="cancel"
 					value="重填"></td>

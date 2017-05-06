@@ -36,7 +36,9 @@
 				<td>${VO.mesId}</td>
 				<td>${VO.sendAccount}</td>
 				<td>${VO.message}</td>
-				<td><button id='button' class='btn btn-info' data-whatever="@${VO.sendAccount}" data-toggle='modal' data-target='#sendmail'>回覆</button></td>
+				<td>
+					<button id='button' class='btn btn-info' data-whatever="@${VO.sendAccount}" data-toggle='modal' data-target='#sendmail'>回覆</button>
+				</td>
 				<td>${VO.sendtime}</td>
 			</tr>
 	</c:forEach>

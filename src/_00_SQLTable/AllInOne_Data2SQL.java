@@ -11,6 +11,8 @@ import com.img.Io.ImagesIo;
 import com.member.Model.MemberService;
 import com.rest.Model.RestService;
 import com.restPhoto.Model.RestPhotoService;
+import com.shop.Model.ShopService;
+import com.shop.Model.ShopVO;
 
 public class AllInOne_Data2SQL {
 
@@ -204,7 +206,6 @@ public class AllInOne_Data2SQL {
 		
 		RestService addR1 = new RestService();
 		addR1.update(RestId, ShopId, RestName, RestTel, Restaddr, Ein, RestStart, RestEnd, RestRate, RestNum, data, fileName, Restbrief,0,299);
-				
 		RestId = 2;
 		ShopId = 2;
 		RestName = "小惡魔牛排";
@@ -309,6 +310,19 @@ public class AllInOne_Data2SQL {
 			byte[] RestImage3 = io.isToByte(new FileInputStream(new File("WebContent/images/rests/"+food[j]+"/beff04.jpg")));
 			rpsc1.update(j,j,RestImage1, "beff01", RestImage2, "beff02", RestImage3, "beff03");
 		}
+		
+		
+		ShopService spsrv = new ShopService();
+		for(int i=1;i<=spsrv.getAll().size();i++){
+			ShopVO shopVO = spsrv.getoneshop(i);
+			byte[] ShopImg = io.isToByte(new FileInputStream(new File("WebContent/images/shops/"+shopVO.getShopAccount()+".jpg")));
+			spsrv.update(shopVO.getShopId(), shopVO.getShopAccount(), 
+						shopVO.getShopPswd(), shopVO.getShopName(), 
+						shopVO.getShopIdd(),shopVO.getShopTel(),
+						shopVO.getShopEmail(),shopVO.getSlineId(),shopVO.getStatus()
+						,ShopImg , shopVO.getShopAccount()+".jpg");
+		}
+		
 	}
 }
 

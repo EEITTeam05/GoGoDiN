@@ -213,7 +213,8 @@ public class ShopServlet extends HttpServlet {
 			String shopTel = request.getParameter("shopTel");
 			String shopMail = request.getParameter("shopMail");
 			String shopLine = request.getParameter("shopLine");
-
+			byte[] data = request.getParameter("file1").getBytes();
+			
 			if (shopPswd == null || shopPswd.trim().length() == 0 || shopPswd.trim().length() > 12)
 				errorMsgs.put("Pswd", "密碼格式錯誤，不得為零或大於12");
 
@@ -260,7 +261,7 @@ public class ShopServlet extends HttpServlet {
 					return;
 				}
 				ShopService sSvc = new ShopService();
-				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine, 0);
+				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine, 0,data,"filename");
 				loginService ls = new loginService();
 				ls.populateShopList();
 				// 修改完成，準備轉交

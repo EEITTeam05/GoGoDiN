@@ -58,13 +58,13 @@
       	<div class="collapse navbar-collapse" style="margin-top: 25px;">
    			 <button type="button" class="btn btn-secondary my-2 my-sm-0 btn-lg">
    			 <c:choose>
-   			 		<c:when test="${empty FBLoginOK }">	
-   				<img class="uk-border-rounded" style="height: 30px; width: 30px;margin-top:0px;margin-right: 5px;" src="${pageContext.servletContext.contextPath}/init/getImage?id=${LoginOK.memId}&type=Member">
-   					</c:when>
-   				<c:otherwise>
+  			 	<c:when test="${!empty FBLoginOK}">	
    					<jsp:useBean id="LoginOK" scope="session" class="com.member.Model.MemberListVO"></jsp:useBean>
-				<img class="uk-border-rounded" style="height: 30px; width: 30px;margin-top:0px;margin-right: 5px;" src= <%=new String(LoginOK.getMemberImage())%> />	
-   				</c:otherwise>
+						<img class="uk-border-rounded" style="height: 30px; width: 30px;margin-top:0px;margin-right: 5px;" src= <%=new String(LoginOK.getMemberImage())%> />	
+ 				</c:when>
+   				<c:when test="${!empty LoginOK}">
+   					<img class="uk-border-rounded" style="height: 30px; width: 30px;margin-top:0px;margin-right: 5px;" src="${pageContext.servletContext.contextPath}/init/getImage?id=${LoginOK.memId}&type=Member">
+   				</c:when>
  			 </c:choose>
      	 			<span style="font-size: 20px;position: relative;top: 3px;">${LoginOK.memName}</span>
 		      		<div uk-dropdown>
@@ -92,6 +92,7 @@
       	<c:when test="${!empty ShopLoginOK}">
       	<div class="collapse navbar-collapse" style="margin-top: 25px;">
    			 <button type="button" class="btn btn-success my-2 my-sm-0 btn-lg">	
+   					<img class="uk-border-rounded" style="height: 30px; width: 30px;margin-top:0px;margin-right: 5px;" src="${pageContext.servletContext.contextPath}/init/getImage?id=${ShopLoginOK.shopAccount}&type=AccountImg">
      	 			<span style="font-size: 20px;position: relative;top: 3px;">${ShopLoginOK.shopName}</span>
 		      		<div uk-dropdown>
 				        	<ul class="uk-nav uk-dropdown-nav">

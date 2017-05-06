@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
 
+import com.admin.Model.AdminVO;
 import com.img.Io.ImagesIo;
+import com.login_Model.loginService;
 import com.member.Model.MemberListVO;
 import com.member.Model.MemberService;
 import com.rest.Model.RestService;
@@ -28,6 +30,7 @@ import com.rest.Model.RestVO;
 import com.restPhoto.Model.RestPhotoService;
 import com.restPhoto.Model.RestPhotoVO;
 import com.search.Model.SearchService;
+import com.shop.Model.ShopVO;
 import com.ticket.model.TicketService;
 import com.ticket.model.TicketVO;
 
@@ -83,6 +86,22 @@ public class GetImageFromDB extends HttpServlet {
 			TicketService tkt = new TicketService();
 			TicketVO tktVO = tkt.getOrder(new Integer(sid));
 			data = tktVO.getTktImage();
+		}else if (type.equalsIgnoreCase("AccountImg")){
+			loginService lgsrv;
+			try {
+				lgsrv = new loginService();
+				MemberListVO mb = lgsrv.getMemberList().get(sid.toLowerCase());
+				ShopVO sb = lgsrv.getShopList().get(sid.toLowerCase());
+				AdminVO ab = lgsrv.getAdminList().get(sid);
+				if(mb!=null){
+					data = mb.getMemberImage();
+				}else if(sb!=null){
+					data = sb.getShopImage();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		

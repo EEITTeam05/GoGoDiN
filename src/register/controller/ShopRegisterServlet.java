@@ -1,6 +1,7 @@
 package register.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
+import com.img.Io.ImagesIo;
 import com.shop.Model.ShopService;
 import com.shop.Model.ShopVO;
 
@@ -44,6 +46,9 @@ public class ShopRegisterServlet extends HttpServlet {
 		String email = "";
 		String LineID = "";
 		String address = "";
+		String fileName = "";
+		InputStream is = null;
+		byte[] data = null;
 
 		Collection<Part> parts = request.getParts();
 		if (parts != null) { // parts裡有東西
@@ -69,6 +74,15 @@ public class ShopRegisterServlet extends HttpServlet {
 						LineID = value;
 					} else if ("address".equalsIgnoreCase(fldName)) {
 						address = value;
+					}
+				}else {// 代表不是null就是使用者要輸入欄位的類型是檔案,不是一般輸入的文字數字唷!
+					fileName = RegisterServlet.getFileName(p);
+					if (fileName != null && fileName.trim().length() > 0) {// 判斷檔案名稱
+						is = p.getInputStream();// 能執行到這邊代表要寫入的資料就是圖片,為了準備寫入資料庫,故上面先宣告一個is放著
+						ImagesIo io = new ImagesIo();
+						data = io.isToByte(is);
+					} else {// 代表檔案名稱檢查完得到的不是一個圖片檔,就會跑來這邊
+						errorMsg.put("errPicture", "必須挑選圖片檔");// 顯示要使用者挑選圖片檔
 					}
 				}
 			}
@@ -137,7 +151,6 @@ public class ShopRegisterServlet extends HttpServlet {
 				} else
 					errorMsg.put("errorIdd", "檢查碼錯誤");
 			}
-
 			if (name == null || name.trim().length() == 0)
 				errorMsg.put("errorName", "姓名欄必須輸入");
 			if (address == null || address.trim().length() == 0)
@@ -158,7 +171,7 @@ public class ShopRegisterServlet extends HttpServlet {
 					errorMsg.put("errorIDDup", "此帳號已存在，請選擇新帳號");
 				} else {
 					ShopService shopServ = new ShopService();
-					ShopVO shopVO = shopServ.addShop(Account, password, name, Idd, tel, email, LineID,0);
+					ShopVO shopVO = shopServ.addShop(Account, password, name, Idd, tel, email, LineID,0,data,fileName);
 					response.sendRedirect("../index.jsp");
 					session.setAttribute("ShopLoginOK", shopVO);
 					return;

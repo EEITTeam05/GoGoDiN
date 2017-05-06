@@ -82,18 +82,22 @@ CREATE TABLE ShopTable(
 
      SLineId            VARCHAR(20),
 
-	 status             INT
+	 status             INT,
+	 
+     ShopImage        VARBINARY(MAX),
+
+     fileName           VARCHAR(20),
 )
 
 INSERT INTO ShopTable
 
 VALUES
 
-('shop1','shop1','克萊兒','1234567890','28965475','gikig@gmail.com','hollo',0),
+('shop1','shop1','克萊兒','1234567890','28965475','gikig@gmail.com','hollo',0,null,null),
 
-('shop2','shop2','唐娜','1234567890','25465856','giqqig@gmail.com','world',0),
+('shop2','shop2','唐娜','1234567890','25465856','giqqig@gmail.com','world',0,null,null),
 
-('shop3','shop3','奧古斯特','1234567890','26547852','jkkig@gmail.com','ayaya',0)
+('shop3','shop3','奧古斯特','1234567890','26547852','jkkig@gmail.com','ayaya',0,null,null)
 
 
 

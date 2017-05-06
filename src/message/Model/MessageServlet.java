@@ -66,7 +66,7 @@ public class MessageServlet extends HttpServlet {
 				}
 			}
 			request.setAttribute("list", list);
-			RequestDispatcher rd = request.getRequestDispatcher("allmail.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
 			rd.forward(request, response);
 			return;
 		}

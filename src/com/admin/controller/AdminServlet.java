@@ -114,7 +114,10 @@ public class AdminServlet extends HttpServlet {
 			String shopMail = request.getParameter("shopMail");
 			String shopLine = request.getParameter("shopLine");
 			Integer status = new Integer(request.getParameter("status"));
-			
+			String fileName = request.getParameter("fileName").trim();
+			ShopService spsrv = new ShopService();
+			ShopVO shopVO = spsrv.getoneshop(shopId);
+			byte[] data = shopVO.getShopImage();
 			if (shopName == null || shopName.trim().length() == 0 || shopName.trim().length() > 4)
 				errorMsgs.put("Name", "姓名格式錯誤，不得為零或大於4個國字");
 			
@@ -139,7 +142,7 @@ public class AdminServlet extends HttpServlet {
 				shopMail = request.getParameter("shopMail").trim();
 				shopLine = request.getParameter("shopLine").trim();
 				
-				ShopVO shopVO = new ShopVO();
+				shopVO = new ShopVO();
 				shopVO.setShopId(shopId);
 				shopVO.setShopAccount(shopAcc);
 				shopVO.setShopPswd(shopPswd);
@@ -157,7 +160,7 @@ public class AdminServlet extends HttpServlet {
 					return;
 				}
 				ShopService sSvc = new ShopService();
-				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine,status);
+				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine,status,data,fileName);
 				
 				//修改完成，準備轉交
 				List<ShopVO> listShop = sSvc.getAll();
@@ -217,11 +220,11 @@ public class AdminServlet extends HttpServlet {
 			Integer memSex = new Integer(request.getParameter("memSex").trim());
 			java.sql.Date memBirth = java.sql.Date.valueOf(request.getParameter("memBirth").trim());
 			String memAddr = request.getParameter("memAddr").trim();
-			String fileName = request.getParameter("fileName").trim();
 			String memName = request.getParameter("memName");
 			String memTel = request.getParameter("memTel");
 			String memMail = request.getParameter("memMail");
 			String memLine = request.getParameter("memLine");
+			String fileName = request.getParameter("fileName").trim();
 			Integer status = new Integer(request.getParameter("status"));
 			
 			

@@ -61,6 +61,10 @@
 				<td><input type="text" name="shopLine" size="50" value="${ShopLoginOK.slineId}" /></td>
 			</tr>
 			<tr>
+		    	<th>更換照片</th>
+		    	<td align="center" valign="middle"><Input type="file" size="40" name="file1" size="50" align="middle"></td>
+			</tr>
+			<tr>
 				<td colspan="2">
 					<input type="submit" value="確認送出"style=" width:100px;height:50px" >
 					<input type="hidden" name="action" value="updateShop">

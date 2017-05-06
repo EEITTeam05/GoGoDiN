@@ -50,6 +50,8 @@ table td {
 				<th>電話</th>
 				<th>信箱</th>
 				<th>Line</th>
+				<th>照片</th>
+				
 				<td rowspan="2">
 					<form method="post" action="ShopServlet" >
 						<input type="submit" value="修改" style="width:100px;height:50px;">
@@ -67,6 +69,9 @@ table td {
 				<td>${ShopLoginOK.shopTel}</td>
 				<td>${ShopLoginOK.shopEmail}</td>
 				<td>${ShopLoginOK.slineId}</td>
+				<td>
+				<img height='80px' width='80px' src='${pageContext.servletContext.contextPath}/init/getImage?id=${ShopLoginOK.shopAccount}&type=AccountImg'>
+				</td>
 			</tr>
 		</table>
 	</c:if>

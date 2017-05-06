@@ -175,7 +175,7 @@
 		            </form>
 	            <div class="container-fluid">
 		              	<br>
-			              <a class="small" href="#">忘記密碼?</a>
+		              	  <a class="small" href="<%=request.getContextPath()%>/forgetpass.jsp">忘記密碼?</a>
 			              <a class="small" style="  float: right;" href="<%=request.getContextPath()%>/Member/register.jsp">註冊</a>
 		              <small style="  float: right;">第一次來?</small> 
 	            </div> 
@@ -200,14 +200,13 @@
 		}
 	)
 	$('#btnLogin').click(function(){
-			$.post('https://www.google.com/recaptcha/api/siteverify',{})
 			$.post('login.do',{
 				'userId':$('#usr').val(),
 				'pswd':$('#pwd').val(),
 				'word':'a',
 				'rememberMe':$('input[type="checkbox"]').prop("checked")
 			},function(){
-				history.go(0);
+				history.go(0)
 		});
 	});
 	$('#linelogin').hover(function(){

@@ -192,18 +192,8 @@ public class RegisterServlet extends HttpServlet {
 				MemberListVO ml = null;
 				MemberService mb = new MemberService();
 				loginService losrv = new loginService();
-				if (losrv.getMemberList().containsKey(Account.toLowerCase())) {
-					ml = losrv.getMemberList().get(Account.toLowerCase());
-					ml = mb.update(ml.getMemId(),Account, password, name, sex, bday, email, LineID, tel, address, data,
-							fileName,ml.getStatus());
-					session.setAttribute("LoginOK", ml);
-					session.setAttribute("FBLoginOK", ml);
-					request.getRequestDispatcher(request.getContextPath() + "/index.jsp").forward(request, response);
-					return;
-				}
-				
 				ml = mb.addMember(Account, password, name, sex, bday, email, LineID, tel, address, data,
-						fileName);
+						fileName,0);
 				losrv.addNewMember(ml);
 				msgOK.put("InsertOK", "<Font color='red'>新增成功,請開始使用本系統</Font>");
 				response.sendRedirect(request.getContextPath()+"/index.jsp");

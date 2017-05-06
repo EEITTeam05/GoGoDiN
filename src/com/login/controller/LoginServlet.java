@@ -97,12 +97,10 @@ public class LoginServlet extends HttpServlet {
 
 		Map<String, String> errorMsgMap = new HashMap<String, String>();
 		request.setAttribute("ErrorMsgKey", errorMsgMap);
-
 		String userId = request.getParameter("userId");
 		String pswd = request.getParameter("pswd");
 		String word = request.getParameter("word").toUpperCase();
 		boolean re = Boolean.parseBoolean(request.getParameter("rememberMe"));
-
 		if (userId == null || userId.trim().length() == 0) {
 			errorMsgMap.put("AccountEmptyError", "帳號欄必須輸入");
 		}

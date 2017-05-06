@@ -94,7 +94,7 @@ public class fbRegisterServlet extends HttpServlet {
 				logsrv.updateMember(ml);
 			} else {
 				ml = mb.addMember(Account, password, name, sex, bday, email, LineID, tel, address, data,
-						fileName);
+						fileName,0);
 				logsrv.addNewMember(ml);
 			}
 			session.setAttribute("FBLoginOK",ml);

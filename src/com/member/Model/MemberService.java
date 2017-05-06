@@ -20,7 +20,7 @@ public class MemberService {
 
 	// 1.新增
 	public MemberListVO addMember(String MemAccount, String MemPswd, String MemName, int Sex, Date Birthday,
-			String Email, String MlineId, String MemTel, String MemAddr, byte[] data, String fileName) throws SQLException {
+			String Email, String MlineId, String MemTel, String MemAddr, byte[] data, String fileName,Integer status) throws SQLException {
 
 		MemberListVO memVO = new MemberListVO();		
 
@@ -35,6 +35,7 @@ public class MemberService {
 		memVO.setMemAddr(MemAddr);
 		memVO.setMemberImage(data);
 		memVO.setFileName(fileName);
+		memVO.setStatus(status);
 		dao.insert(memVO);
 
 		loginService logsvc = new loginService();

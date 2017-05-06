@@ -74,7 +74,7 @@ public class OrderSeat extends HttpServlet {
 				RestVO restVO = new SearchService().getRestMap().get(restName);
 				StringBuffer message = new StringBuffer();
 				message.append("恭喜您在[<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestId() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位成功<p>")
+						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位成功<p>")
 						.append("預位時間:" + date1 + "  " + time1 + "<p>").append("訂位人數:" + pNum + "人");
 
 				String MemAccount = mb.getMemAccount();
@@ -87,7 +87,7 @@ public class OrderSeat extends HttpServlet {
 				message.delete(0, message.length());// 清空內容
 
 				message.append("恭喜有位客人在你的  [<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestId() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位成功<p>")
+						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位成功<p>")
 						.append("訂單人姓名:" + mb.getMemName() + "<p>").append("訂單時間:" + date1 + "  " + time1 + "<p>")
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
@@ -137,7 +137,7 @@ public class OrderSeat extends HttpServlet {
 				RestVO restVO = new SearchService().getRestMap().get(restName);
 				StringBuffer message = new StringBuffer();
 				message.append("您在[<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestId() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位資料已修改成功<p>")
+						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位資料已修改成功<p>")
 						.append("預位時間:" + date1 + "  " + time1 + "<p>").append("訂位人數:" + pNum + "人");
 
 				String MemAccount = odVO.getMemVO().getMemAccount();
@@ -150,7 +150,7 @@ public class OrderSeat extends HttpServlet {
 				message.delete(0, message.length());// 清空內容
 
 				message.append("您剛剛已修改  [<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestId() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位資料<p>")
+						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位資料<p>")
 						.append("訂單人姓名:" + odVO.getMemVO().getMemName() + "<p>").append("訂單時間:" + date1 + "  " + time1 + "<p>")
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者

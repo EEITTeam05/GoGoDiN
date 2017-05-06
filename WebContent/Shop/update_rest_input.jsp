@@ -8,12 +8,22 @@
 .imgs{
 margin-left:2px;
 }
+ table { 
+ 		border-top-left-radius:20px; 
+		border-top-right-radius:20px; 
+ 		border-bottom-left-radius:20px; 
+		padding: 10px; 
+ }
+ table th {
+ 	text-align:center;
+ 	width: 100px;
+ }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>修改資料</title>
 </head>
 <body>
-	<a href="<%=request.getContextPath()%>/index.jsp">回首頁</a>
+	<jsp:include page="../navbar.jsp"></jsp:include>
 	<hr>
 	<c:if test="${! empty errorMsgs }" >
 		<font size="-1" color="red">${errorMsgs.Name}</font><br>
@@ -26,7 +36,7 @@ margin-left:2px;
 	</c:if>
 	<c:if test="${! empty ShopLoginOK ||! empty AdminLoginOK }" >
 		<form method="post" name="updateRest" action="ShopServlet" enctype="multipart/form-data" >
-			<table border='1' bordercolor='#CCCCFF' width='800'>
+			<table border='1' bordercolor='#CCCCFF' width='800' align='center' height='750'>
 				<tr align='center' valign='middle'>
 					<th>餐廳名稱</th>
 					<td><input type="text" name="restName" size="50" value="${restVO.restName}"/></td>
@@ -88,10 +98,14 @@ margin-left:2px;
 		        		<img id="img3" class="imgs" height='160px' width='160px' src='${pageContext.servletContext.contextPath}/init/getImage?id=${restVO.restId}&photo=3&type=RestPhoto'>
 	        		</td>
 				</tr>
+			<tr align="center">
+					<td colspan="2">
+							<input type="submit" value="確認送出" style="width:100px;height:50px" >
+							<input type="hidden" name="action" value="updateRestMulti" >
+							<input type="hidden" name="restId" value="${restVO.restId}">
+					</td>
+				</tr>
 			</table>
-			<input type="submit" name="submit" value="確認送出">
-			<input type="hidden" name="action" value="updateRestMulti">
-			<input type="hidden" name="restId" value="${restVO.restId}">
 		</form>
 	</c:if>
 </body>

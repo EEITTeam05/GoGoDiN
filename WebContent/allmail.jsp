@@ -8,6 +8,11 @@
 
 <html>
 <head>
+<style>
+	table th {
+		text-align:center;
+	}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.21/css/uikit.min.css" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -16,7 +21,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-<table border='1' bordercolor='#CCCCFF' width='800'>
+	<jsp:include page="navbar.jsp"></jsp:include>
+	<hr>
+<table border='1' bordercolor='#CCCCFF' width='1000' align="center">
 	<tr>
 		<th>信件編號</th>
 		<th>寄件者</th>
@@ -34,7 +41,6 @@
 			</tr>
 	</c:forEach>
 </table>
-<a href="index.jsp"><p align="center">回首頁</a>
 <div class="modal fade" id="sendmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

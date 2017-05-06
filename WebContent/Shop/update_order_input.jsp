@@ -7,13 +7,14 @@
 <html>
 <head>
 <style>
-table{
-	margin-left: 20px;
+table th {
+		text-align:center;
+		height:30px;
+	}
+table td {
+		height:50px;
+		padding-left:10px;
 }
-
-
-
-
 </style>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
@@ -33,14 +34,14 @@ table{
 <title>訂單內容</title>
 </head>
 <body>
-	<a href="<%=request.getContextPath()%>/index.jsp">回首頁</a>
+	<jsp:include page="../navbar.jsp"></jsp:include>
 	<hr>
 	<c:if test="${! empty errorMsgs }" >
 		<font size="-1" color="red">${errorMsgs.error}</font>
 	</c:if>
 	
 	<c:if test="${! empty ShopLoginOK }">
-		<table border='1' bordercolor='#CCCCFF' width='400'>
+		<table border='1' bordercolor='#CCCCFF' width='450'  height='550' align='center'>
 			    <tr>
 					<th>訂單編號</th>
 					<td>${OrderVO.orderNum }</td>
@@ -78,10 +79,9 @@ table{
 					</td>
 				</tr>
 			
-			   <tr>
-			        <th></th>
-					<td>
-					<input type="button" class="btn btn-primary float-right" id="upd" value="修改">		
+			   <tr align="center">
+					<td colspan="2">
+					<input type="button" class="btn btn-primary" id="upd" value="修改" style="width:100px;height:50px;">		
 					</td>
 				</tr>
 		</table>

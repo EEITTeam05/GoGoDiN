@@ -5,18 +5,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<style type="text/css">
+ table { 
+ 		border-top-left-radius:20px; 
+		border-top-right-radius:20px; 
+ 		border-bottom-left-radius:20px; 
+		padding: 10px; 
+ }
+ table th {
+ 	text-align:center;
+ }
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>餐廳修改</title>
 </head>
 <body>
-	<a href="<%=request.getContextPath()%>/index.jsp">回首頁</a>
+	<jsp:include page="../navbar.jsp"></jsp:include>
 	<hr>
 	<c:if test="${! empty errorMsgs }">
 		<font size="-1" color="red">${errorMsgs.error }</font>
 	</c:if>
 	<c:if test="${! empty ShopLoginOK }">
-		<table border='1' bordercolor='#CCCCFF' width='1200'>
-			<tr>
+		<table border='1' bordercolor='#CCCCFF' width='1200' align='center' >
+			<tr align='center' >
 				<th>餐廳名稱</th>
 				<th>餐廳電話</th>
 				<th>餐廳地址</th>
@@ -27,7 +38,7 @@
 				<th>照片</th>
 			</tr>
 			<c:forEach var="listRest" items="${listRest }" >
-				<tr align='center' valign='middle'>
+				<tr align='center' valign='middle' >
 					<td>${listRest.restName }</td>
 					<td>${listRest.restTel }</td>
 					<td>${listRest.restaddr }</td>

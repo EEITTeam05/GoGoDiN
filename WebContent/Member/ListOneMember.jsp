@@ -5,12 +5,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<style>
+	table th {
+    padding: 15px;
+}
+</style>
 </head>
 
 
 <body>
+	<jsp:include page="../navbar.jsp"></jsp:include>
+	<hr>
 	<form enctype="multipart/form-data" method="POST" action="MemberServlet">
-	<table border='1' bordercolor='#CCCCFF' width='800'>
+	<table border='1' bordercolor='#CCCCFF' width='800' align="center">
 	    <tr align='center' valign='middle'>
 	    <th></th>
 	    	<td>
@@ -90,15 +97,17 @@
 		    <th>更換照片：</th>
 		    <td><Input type="file" size="40" name="file1" style="width:300px;"></td>
 		</tr>
+		<tr>
+			<td colspan="2" align="center" style="padding:10px">
+				<input type="submit" value="確認送出" style="width:100px;height:50px" >
+				<input type="hidden" name="action" value="update">
+				<input type="hidden" name="memId" value="${LoginOK.memId}">
+				<input type="hidden" name="memAccount" value="${LoginOK.memAccount}">
+				<input type="hidden" name="fileName" value="${LoginOK.fileName}">
+				<input type="hidden" name="fileName" value="${LoginOK.fileName}">			
+			</td>
+		</tr>
 	</table>
-	
-	<input type="submit" value="確認送出">
-	<input type="hidden" name="action" value="update">
-	<input type="hidden" name="memId" value="${LoginOK.memId}">
-	<input type="hidden" name="memAccount" value="${LoginOK.memAccount}">
-	<input type="hidden" name="fileName" value="${LoginOK.fileName}">
-	<input type="hidden" name="fileName" value="${LoginOK.fileName}">			
-	
 	</form>
 
 </body>
@@ -109,7 +118,7 @@ $(function (){
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                $('img').attr({'src':e.target.result,'id':'change'});
+                $('td > img').attr({'src':e.target.result,'id':'change'});
             }
             reader.readAsDataURL(input.files[0]);
         }
@@ -118,14 +127,6 @@ $(function (){
     $("body").on("change", "input[name='file1']", function (){
         preview(this);
     })
-//     var image1 = $('img');
-// 	if(image1.attr('id')!='change'){
-// 	   	image1.hover(function(){
-// 	   		alert(123);
-// 	   	},function(){
-// 	   		alert(143);
-// 	   	})
-// 	}
 })
 </script>
 </html>

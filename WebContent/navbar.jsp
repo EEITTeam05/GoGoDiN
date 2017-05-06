@@ -5,7 +5,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.20/css/uikit.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
@@ -13,7 +13,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.20/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.20/js/uikit-icons.min.js"></script>
 <script src='https://www.google.com/recaptcha/api.js' async defer></script>
-<script src="js/line.js"></script>
+<script src="<%=request.getContextPath()%>/js/line.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/rotate.css">
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="application/javascript">
@@ -26,7 +29,19 @@
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded" style="background-color: #FFFFFF;">
   <div class="collapse navbar-collapse">
       <a class="navbar-brand" href="<%=request.getContextPath()%>/index.jsp" style="height: 100px">
-		<img alt="" class="d-inline-block align-top" src="images/Logo.png">
+		<img alt="" class="d-inline-block align-top" src="<%=request.getContextPath()%>/images/Logo.png">
+		<div class="Iam">
+				<p>We are</p>
+					<b>
+					  <div class="innerIam">
+					    Institute for Information Industry<br /> 
+					    EEIT93<br />
+					    the best<br />
+					    Team5<br />
+					    GoGoDiN
+					    </div>
+					 </b>
+		</div>
     </a>
     <div>
       <ul class="navbar-nav mr-auto">
@@ -65,10 +80,10 @@
 					            	</a>
 					            </li>
 					            <li class="uk-nav-header">Header</li>
-					            <li><a href="#">Item</a></li>
+					            <li><a href="<%=request.getContextPath()%>/ticket/ticket.jsp">購買餐卷</a></li>
 					            <li><a href="#">Item</a></li>
 					            <li class="uk-nav-divider"></li>
-					            <li><a href="logout.jsp">登出</a></li>
+					            <li><a href="<%=request.getContextPath()%>/logout.jsp">登出</a></li>
 				        	</ul>
 				    	</div>
       			</button>
@@ -100,7 +115,7 @@
 					            </li>
 					            <li><a href="<%=request.getContextPath()%>/Shop/Publish.jsp">刊登餐廳</a></li>
 					            <li class="uk-nav-divider"></li>
-					            <li><a href="logout.jsp">登出</a></li>
+					            <li><a href="<%=request.getContextPath()%>/logout.jsp">登出</a></li>
 				        	</ul>
 				    	</div>
       			</button>

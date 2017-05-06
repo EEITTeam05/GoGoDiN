@@ -45,6 +45,7 @@
 		<mapping resource="message/Model/MessageList.hbm.xml" />
 		<mapping resource="com/restPhoto/Model/RestPhoto.hbm.xml" />
 		<mapping resource="com/favorite/Model/Favorite.hbm.xml" />
+		<mapping resource="com/ticket/model/Ticket.hbm.xml" />
 	</session-factory>
 	
 </hibernate-configuration>

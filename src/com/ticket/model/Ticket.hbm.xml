@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.ticket.model.TicketVO" table="TicketTable" >
+        
+        <id name="TktId" column="TktId">
+            <generator class="identity"/>
+        </id>      
+          
+        <many-to-one name="restVO" class="com.rest.Model.RestVO" lazy="false">
+        	<column name="RestId"></column>
+        </many-to-one>
+        
+        <property name="ProductName" column="ProductName" />        
+        <property name="Detailed" column="Detailed" />
+        <property name="TktMoney" column="TktMoney" />
+        <property name="TktImage" column="TktImage" />
+        <property name="FileName" column="FileName" />
+                
+    </class>
+</hibernate-mapping>

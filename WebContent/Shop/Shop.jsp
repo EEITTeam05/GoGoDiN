@@ -5,13 +5,25 @@
 
 <html>
 <head>
+<style type="text/css">
+tr {
+		text-align:center;
+	}
+table th {
+	text-align:center;
+	height:30px;
+}
+table td {
+	height:70px;
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>業者資料</title>
 </head>
 <body>
-<a href="<%=request.getContextPath()%>/index.jsp">回首頁</a>
-<hr>
-<h1>登入成功!</h1>
+<jsp:include page="../navbar.jsp"></jsp:include>
+	<hr>
+	<h1 align="center">個人資料</h1>
 	<%-- 錯誤表列 --%>
 <c:if test="${not empty errorMsgs}">
 	<font color='red'>請修正以下錯誤:
@@ -28,7 +40,7 @@
 	<%-- 	</c:if> --%>
 
 	<c:if test="${! empty ShopLoginOK }">
-		<table border='1' bordercolor='#CCCCFF' width='800'>
+		<table border='1' bordercolor='#CCCCFF' width='800' align="center">
 			<tr>
 				<th>編號</th>
 				<th>帳號</th>
@@ -38,6 +50,13 @@
 				<th>電話</th>
 				<th>信箱</th>
 				<th>Line</th>
+				<td rowspan="2">
+					<form method="post" action="ShopServlet" >
+						<input type="submit" value="修改" style="width:100px;height:50px;">
+						<input type="hidden" name="shopId" value="${ShopLoginOK.shopId }" >
+						<input type="hidden" name="action" value="getShopUpdate" >
+					</form>						
+				</td>
 			</tr>
 			<tr align='center' valign='middle'>
 				<td>${ShopLoginOK.shopId}</td>
@@ -48,16 +67,7 @@
 				<td>${ShopLoginOK.shopTel}</td>
 				<td>${ShopLoginOK.shopEmail}</td>
 				<td>${ShopLoginOK.slineId}</td>
-				
-				<td>
-					<form method="post" action="ShopServlet" >
-						<input type="submit" value="修改" >
-						<input type="hidden" name="shopId" value="${ShopLoginOK.shopId }" >
-						<input type="hidden" name="action" value="getShopUpdate" >
-					</form>						
-				</td>
 			</tr>
-
 		</table>
 	</c:if>
 </body>

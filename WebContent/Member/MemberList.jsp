@@ -11,7 +11,9 @@
  		border-bottom-left-radius:20px; 
 		padding: 10px; 
  } 
-
+table th {
+	text-align:center;
+}
 
 
 </style>
@@ -23,7 +25,7 @@
 <title>MemberList</title>
 </head>
 <body>
-	<a href="<%=request.getContextPath()%>/index.jsp">回首頁</a>
+	<jsp:include page="../navbar.jsp"></jsp:include>
 	<hr>
 
 	<h1 id='per' align='center'>個人資料</h1>
@@ -33,7 +35,7 @@
 	<%-- 	</c:if> --%>
 
 	<c:if test="${! empty LoginOK }">
-		<table id='t1' border='1' bordercolor='blue' width='1000' align='center' style="color:#770077;">
+		<table id='t1' border='1' bordercolor='blue' width='1200' align='center' style="color:#770077;">
 			<tr>
 				<th>會員編號</th>
 				<th>會員帳號</th>

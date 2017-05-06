@@ -28,15 +28,20 @@
 span.label{
 	margin-left: 15px;
 }
+table th {
+	text-align:center;
+}
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>查詢訂單</title>
 
 </head>
 <body bgcolor='white'>
+	<jsp:include page="../navbar.jsp"></jsp:include>
+	<hr>
 
 <c:if test="${! empty LoginOK }">
-  <table border='1' style="float:left;" bordercolor='#CCCCFF' width='1200' >
+  <table border='1' bordercolor='#CCCCFF' width='1200' align="center">
 	<tr align='center' valign='middle'>
 		<th>訂單編號</th>
 		<th>會員姓名</th>
@@ -85,9 +90,7 @@ span.label{
 	</c:forEach>
 </table>
 </c:if>
-<div id="myMap" style="width:800px;height:300px;"></div>
-<input type="button" onclick=history.back() value="回上頁" />
-<div id="myDiv"></div>
+<div id="myMap" style="width:1200px;height:300px;margin-left:360px" ></div>
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-beta.20/js/uikit.min.js"></script>
@@ -97,7 +100,6 @@ span.label{
 <script src="<%=request.getContextPath()%>/js/jquery.tinyMap.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/star-rating.min.js"></script>  
 <script type="text/javascript">
-var myDiv = $('#myDiv');
 var restid;
 $('td > input[type="button"]').on('click',function(){
 	restName = $(this).attr("data-id");
@@ -155,5 +157,4 @@ function mapGo(){
 			});
 	 })
 </script>
-
 </html>

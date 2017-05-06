@@ -31,6 +31,8 @@ input{
 <title>刊登</title>
 </head>
 <body>
+	<jsp:include page="../navbar.jsp"></jsp:include>
+	<hr>
 <div id="d1">
 <form method="POST" action="publish.do"  name="publish" enctype="multipart/form-data">
       <label class="fontSize" >餐廳名稱：</label>

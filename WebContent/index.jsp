@@ -107,6 +107,7 @@
 		<c:when test="${!empty LoginOK}">
 			<a href='<%=request.getContextPath()%>/Member/MemberList.jsp'>個人資料</a>
 			<a href='<%=request.getContextPath()%>/Member/MemOrderServlet?action=getOrderList'>查詢訂單</a>
+			<a href='<%=request.getContextPath()%>/ticket/ticket.jsp'>購買餐卷</a>
 		</c:when>
 		<c:when test="${!empty ShopLoginOK}">
 			<a href='<%=request.getContextPath()%>/Shop/Shop.jsp'>查詢資料</a>

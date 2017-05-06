@@ -7,6 +7,8 @@ DROP TABLE     OrderTable
 
 DROP TABLE     FavoriteTable
 
+DROP TABLE 	   TicketTable
+
 DROP TABLE     RestPhoto
 
 DROP TABLE     RestTable
@@ -18,7 +20,6 @@ DROP TABLE     MemberList
 DROP TABLE     MessageList
 
 DROP TABLE     AdminList
-
 
 CREATE TABLE MemberList (
 
@@ -170,6 +171,17 @@ values
 
 
 
+create table TicketTable(
+	TktId int PRIMARY KEY IDENTITY(1,1) not null,
+	RestId INT references RestTable(RestId) ,
+	ProductName varchar(30),
+	Detailed varchar(100),
+	TktMoney int ,
+	TktImage VARBINARY(MAX),
+    FileName VARCHAR(20)
+)
+
+
 CREATE TABLE FavoriteTable
 
 (
@@ -270,3 +282,5 @@ SELECT * FROM MessageList
 SELECT * FROM FavoriteTable
 
 SELECT * FROM RestPhoto
+
+SELECT * FROM TicketTable

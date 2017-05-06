@@ -42,30 +42,30 @@ import com.shop.Model.ShopVO;
 import register.controller.RegisterServlet;
 
 @MultipartConfig(location = "", fileSizeThreshold = 1024 * 1024, // 超過file-size-threshold的檔案request將會以臨時暫存的方式存到硬碟中，預設為0
-maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024 * 50 * 5)
+		maxFileSize = 1024 * 1024 * 50, maxRequestSize = 1024 * 1024 * 50 * 5)
 @WebServlet("/Shop/ShopServlet")
 public class ShopServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String action = request.getParameter("action");
-		
+
 		if ("listRest".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
+
 			try {
 				HttpSession session = request.getSession();
 				ShopVO sVo = (ShopVO) session.getAttribute("ShopLoginOK");
 				Integer shopId = sVo.getShopId();
-				
+
 				RestService rSvc = new RestService();
 				List<RestVO> listRest = rSvc.findByShopId(shopId);
-				
+
 				session.setAttribute("listRest", listRest);
-				
+
 				String url = "/Shop/listRest.jsp";
 				RequestDispatcher rd = request.getRequestDispatcher(url);
 				rd.forward(request, response);
@@ -76,90 +76,90 @@ public class ShopServlet extends HttpServlet {
 				rd.forward(request, response);
 				return;
 			}
-			
+
 		}
 		if ("OrderCount".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
+
 			PrintWriter out = response.getWriter();
 			HttpSession session = request.getSession();
 			ShopVO sVO = (ShopVO) session.getAttribute("ShopLoginOK");
 			Integer shopId = sVO.getShopId();
-			
+
 			try {
 				OrderService oSvc = new OrderService();
 				List<Object[]> list = oSvc.getOrderCount(shopId);
-				List<Map<String,String>> m2 = new ArrayList<>();
-				for(Object[] object : list){
-					Map<String,String> m1 = new HashMap<>();
-					m1.put("start",String.valueOf(object[0]));
-					m1.put("title",String.valueOf(object[1]));
+				List<Map<String, String>> m2 = new ArrayList<>();
+				for (Object[] object : list) {
+					Map<String, String> m1 = new HashMap<>();
+					m1.put("start", String.valueOf(object[0]));
+					m1.put("title", String.valueOf(object[1]));
 					m2.add(m1);
 				}
 				JSONObject jsob = new JSONObject();
 				jsob.put("count", m2);
-//System.out.println(m2);
+				// System.out.println(m2);
 				out.print(jsob);
 			} catch (Exception e) {
 				errorMsgs.put("error", "取得資料失敗");
 			}
 		}
-		
+
 		if ("OrderCalendar".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
+
 			PrintWriter out = response.getWriter();
 			HttpSession session = request.getSession();
 			ShopVO sVO = (ShopVO) session.getAttribute("ShopLoginOK");
 			Integer shopId = sVO.getShopId();
 			Date date = Date.valueOf(request.getParameter("date"));
-			
+
 			try {
-			OrderService oSvc = new OrderService();
-			
-			List<Object[]> list = oSvc.findByDate(shopId, date);
-			List<Map<String,String>> m2 = new ArrayList<>();
-			for(Object[] object : list){
-				Map<String,String> m1 = new HashMap<>();
-				m1.put("order1",String.valueOf(object[0]));
-				m1.put("order2",String.valueOf(object[1]));
-				m1.put("order3",String.valueOf(object[2]));
-				m1.put("order4",String.valueOf(object[3]));
-				m1.put("order5",String.valueOf(object[4]));
-				m2.add(m1);
-			}
-			JSONObject jsob = new JSONObject();
-//			String jsonString = JSONValue.toJSONString(m2);
-			jsob.put("array", m2);
-//			System.out.println(m2);
-			out.print(jsob);
+				OrderService oSvc = new OrderService();
+
+				List<Object[]> list = oSvc.findByDate(shopId, date);
+				List<Map<String, String>> m2 = new ArrayList<>();
+				for (Object[] object : list) {
+					Map<String, String> m1 = new HashMap<>();
+					m1.put("order1", String.valueOf(object[0]));
+					m1.put("order2", String.valueOf(object[1]));
+					m1.put("order3", String.valueOf(object[2]));
+					m1.put("order4", String.valueOf(object[3]));
+					m1.put("order5", String.valueOf(object[4]));
+					m2.add(m1);
+				}
+				JSONObject jsob = new JSONObject();
+				// String jsonString = JSONValue.toJSONString(m2);
+				jsob.put("array", m2);
+				// System.out.println(m2);
+				out.print(jsob);
 
 			} catch (Exception e) {
 				errorMsgs.put("error", "取得資料失敗");
 			}
 		}
 		if ("listOrder".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
+
 			HttpSession session = request.getSession();
 			ShopVO sVo = (ShopVO) session.getAttribute("ShopLoginOK");
 			Integer shopId = sVo.getShopId();
-			
-			try {			
-			OrderService oSvc = new OrderService();
-			List<Object[]> listOrder = oSvc.findByShopId(shopId);
-			session.setAttribute("listOrder",listOrder);
-				
-			String url = "/Shop/listOrder.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher(url);
-			rd.forward(request, response);
-			return;
+
+			try {
+				OrderService oSvc = new OrderService();
+				List<Object[]> listOrder = oSvc.findByShopId(shopId);
+				session.setAttribute("listOrder", listOrder);
+
+				String url = "/Shop/listOrder.jsp";
+				RequestDispatcher rd = request.getRequestDispatcher(url);
+				rd.forward(request, response);
+				return;
 			} catch (Exception e) {
 				e.printStackTrace();
-				errorMsgs.put("error","取得資料失敗");
+				errorMsgs.put("error", "取得資料失敗");
 				RequestDispatcher rd = request.getRequestDispatcher("/Shop/listOrder.jsp");
 				rd.forward(request, response);
 				return;
@@ -167,43 +167,44 @@ public class ShopServlet extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		MemberServlet mbservlet = new MemberServlet();
-		//接收更新請求
+		// 接收更新請求
 		if ("getShopUpdate".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			request.setAttribute("errorMsgs", errorMsgs);
 			HttpSession session = request.getSession();
 			try {
-				//接收請求
+				// 接收請求
 				Integer shopId = new Integer(request.getParameter("shopId"));
-				
-				//開始查詢資料
+
+				// 開始查詢資料
 				ShopService sSvc = new ShopService();
 				ShopVO shopVO = sSvc.getoneshop(shopId);
-				
-				//查詢完成，準備轉交
+
+				// 查詢完成，準備轉交
 				session.setAttribute("ShopLoginOK", shopVO);
 				String url = "/Shop/update_shop_input.jsp";
 				RequestDispatcher rd = request.getRequestDispatcher(url);
 				rd.forward(request, response);
-				
+
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料" + e.getMessage());
 				RequestDispatcher rd = request.getRequestDispatcher("/Shop/Shop.jsp");
 				rd.forward(request, response);
 			}
 		}
-		
-		//確認更新，準備寫入資料庫
+
+		// 確認更新，準備寫入資料庫
 		if ("updateShop".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
 			HttpSession session = request.getSession();
-			
+
 			Integer shopId = new Integer(request.getParameter("shopId").trim());
 			String shopAcc = request.getParameter("shopAcc").trim();
 			String shopPswd = request.getParameter("shopPswd");
@@ -212,36 +213,36 @@ public class ShopServlet extends HttpServlet {
 			String shopTel = request.getParameter("shopTel");
 			String shopMail = request.getParameter("shopMail");
 			String shopLine = request.getParameter("shopLine");
-			
+
 			if (shopPswd == null || shopPswd.trim().length() == 0 || shopPswd.trim().length() > 12)
 				errorMsgs.put("Pswd", "密碼格式錯誤，不得為零或大於12");
-			
+
 			if (shopName == null || shopName.trim().length() == 0 || shopName.trim().length() > 4)
 				errorMsgs.put("Name", "姓名格式錯誤，不得為零或大於4個國字");
-			
+
 			if (shopTel == null || shopTel.trim().length() == 0 || shopTel.trim().length() > 10)
 				errorMsgs.put("Tel", "電話格式錯誤，不得為零或大於10");
-			
+
 			if (shopMail == null || shopMail.trim().length() == 0)
 				errorMsgs.put("Mail", "信箱格式錯誤，不得為零");
-			
+
 			if (shopLine == null || shopLine.trim().length() == 0)
 				errorMsgs.put("Line", "Line格式錯誤，不得為零");
-			
+
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher rd = request.getRequestDispatcher("/Shop/update_shop_input.jsp");
 				rd.forward(request, response);
 				return;
 			}
-			
+
 			try {
-				
+
 				shopPswd = request.getParameter("shopPswd").trim();
 				shopName = request.getParameter("shopName").trim();
 				shopTel = request.getParameter("shopTel").trim();
 				shopMail = request.getParameter("shopMail").trim();
 				shopLine = request.getParameter("shopLine").trim();
-				
+
 				ShopVO shopVO = new ShopVO();
 				shopVO.setShopId(shopId);
 				shopVO.setShopAccount(shopAcc);
@@ -251,7 +252,7 @@ public class ShopServlet extends HttpServlet {
 				shopVO.setShopTel(shopTel);
 				shopVO.setShopEmail(shopMail);
 				shopVO.setSlineId(shopLine);
-				
+
 				if (!errorMsgs.isEmpty()) {
 					request.setAttribute("shopVO", shopVO);
 					RequestDispatcher rd = request.getRequestDispatcher("/Shop/update_shop_input.jsp");
@@ -259,10 +260,10 @@ public class ShopServlet extends HttpServlet {
 					return;
 				}
 				ShopService sSvc = new ShopService();
-				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine,0);
+				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine, 0);
 				loginService ls = new loginService();
 				ls.populateShopList();
-				//修改完成，準備轉交
+				// 修改完成，準備轉交
 				session.setAttribute("ShopLoginOK", shopVO);
 				String url = "/Shop/listOneShop.jsp";
 				RequestDispatcher rd = request.getRequestDispatcher(url);
@@ -274,67 +275,67 @@ public class ShopServlet extends HttpServlet {
 			}
 		}
 		if ("orderDetail".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
-			try{
-				
-			HttpSession session = request.getSession();
-			Integer restId = new Integer(request.getParameter("restId"));
-			
-			OrderService oSvc = new OrderService();
-			List<OrderVO> listOrderDetail = oSvc.findByRestId(restId);
-			session.setAttribute("listOrderDetail",listOrderDetail);
-			
-			String url = "/Shop/listOrderDetail.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher(url);
-			rd.forward(request, response);
-			return;
+
+			try {
+
+				HttpSession session = request.getSession();
+				Integer restId = new Integer(request.getParameter("restId"));
+
+				OrderService oSvc = new OrderService();
+				List<OrderVO> listOrderDetail = oSvc.findByRestId(restId);
+				session.setAttribute("listOrderDetail", listOrderDetail);
+
+				String url = "/Shop/listOrderDetail.jsp";
+				RequestDispatcher rd = request.getRequestDispatcher(url);
+				rd.forward(request, response);
+				return;
 			} catch (Exception e) {
-				errorMsgs.put("error","取得資料失敗");
+				errorMsgs.put("error", "取得資料失敗");
 				RequestDispatcher rd = request.getRequestDispatcher("/Shop/listOrderDetail.jsp");
 				rd.forward(request, response);
 				return;
 			}
 		}
 		if ("getOrderUpdate".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
-			try{
-				
-			HttpSession session = request.getSession();
-			Integer orderNum = new Integer(request.getParameter("OrderNum"));
-			
-			OrderService oSvc = new OrderService();
-			OrderVO orderVO = oSvc.getOrder(orderNum);
-			session.setAttribute("OrderVO",orderVO);
-			
-			String url = "/Shop/update_order_input.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher(url);
-			rd.forward(request, response);
-			return;
+
+			try {
+
+				HttpSession session = request.getSession();
+				Integer orderNum = new Integer(request.getParameter("OrderNum"));
+
+				OrderService oSvc = new OrderService();
+				OrderVO orderVO = oSvc.getOrder(orderNum);
+				session.setAttribute("OrderVO", orderVO);
+
+				String url = "/Shop/update_order_input.jsp";
+				RequestDispatcher rd = request.getRequestDispatcher(url);
+				rd.forward(request, response);
+				return;
 			} catch (Exception e) {
-				errorMsgs.put("error","取得資料失敗");
+				errorMsgs.put("error", "取得資料失敗");
 				RequestDispatcher rd = request.getRequestDispatcher("/Shop/listOrderDetail.jsp");
 				rd.forward(request, response);
 				return;
 			}
 		}
-		
+
 		if ("getRestUpdate".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
+			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
-			
+
 			try {
 				Integer restId = new Integer(request.getParameter("restId"));
-				
+
 				HttpSession session = request.getSession();
 				RestService rSvc = new RestService();
 				RestVO restVO = rSvc.getOneRest(restId);
-				
-				session.setAttribute("restVO", restVO);	
-				
+
+				session.setAttribute("restVO", restVO);
+
 				String url = "/Shop/update_rest_input.jsp";
 				RequestDispatcher rd = request.getRequestDispatcher(url);
 				rd.forward(request, response);
@@ -346,18 +347,20 @@ public class ShopServlet extends HttpServlet {
 				return;
 			}
 		}
-		if("updateRestMulti".equals(action)){
+		if ("updateRestMulti".equals(action)) {
 			Map<String, String> errorMsg = new HashMap<String, String>();
-			Map<String, String> msgOK = new HashMap<String, String>();
 			HttpSession session = request.getSession();
 			request.setAttribute("MsgMap", errorMsg);
 			ShopVO sVo = (ShopVO) session.getAttribute("ShopLoginOK");
 			AdminVO aVo = (AdminVO) session.getAttribute("AdminLoginOK");
 			Integer shopId = 0;
-			if(sVo!=null){
-				shopId = sVo.getShopId();
-			}
 			Integer restId = new Integer(request.getParameter("restId").trim());
+			RestVO restVO = new RestService().getOneRest(restId);
+			if (sVo != null) {
+				shopId = sVo.getShopId();
+			}else if(aVo !=null){
+				shopId = restVO.getShopId();
+			}
 			String RestName = "";
 			String RestTel = "";
 			String RestAddr = "";
@@ -375,273 +378,136 @@ public class ShopServlet extends HttpServlet {
 			InputStream is2 = null;
 			InputStream is3 = null;
 			RestPhotoService rpsc = new RestPhotoService();
-			RestPhotoVO restPhotoVO = rpsc.getRePohtos(restId);
-			Time restStart = new Time(System.currentTimeMillis());;
-			Time restEnd = new Time(System.currentTimeMillis());;
+			
+			Time restStart = new Time(System.currentTimeMillis());
+			Time restEnd = new Time(System.currentTimeMillis());
 			Collection<Part> parts = request.getParts();
-			if(parts!=null){
-				System.out.println(123123222);
-				for(Part p :parts){
+			if (parts != null) {
+				for (Part p : parts) {
 					String fldName = p.getName();
 					String value = request.getParameter(fldName);
-					if(p.getContentType() == null){
-						if(fldName.equals("restName")){
+					if (p.getContentType() == null) {
+						if (fldName.equals("restName")) {
 							RestName = value;
-						}else if(fldName.equals("restTel")){
-							RestTel  = value;
-						}else if(fldName.equals("restaddr")){
+						} else if (fldName.equals("restTel")) {
+							RestTel = value;
+						} else if (fldName.equals("restaddr")) {
 							RestAddr = value;
-						}else if(fldName.equals("ein")){
-							try{
+						} else if (fldName.equals("ein")) {
+							try {
 								Ein = Integer.parseInt(value);
-							}catch (Exception e) {
+							} catch (Exception e) {
 								errorMsg.put("errorEinEmpty", "統一編號欄格式錯誤");
 							}
-						}else if(fldName.equals("restNum")){
-							try{
-							RestNum = Integer.parseInt(value);
-							}catch (Exception e) {
+						} else if (fldName.equals("restNum")) {
+							try {
+								RestNum = Integer.parseInt(value);
+							} catch (Exception e) {
 								errorMsg.put("errorRestNum", "刊登人數欄格式錯誤");
 							}
-						}else if(fldName.equals("brief") && fldName!= null){
-							try{
+						} else if (fldName.equals("brief") && fldName != null) {
+							try {
 								brief = value;
-							}catch (Exception e) {
+							} catch (Exception e) {
 								errorMsg.put("errorBrief", "刊登簡介欄格式錯誤");
 							}
-						}else if(fldName.equals("money") && fldName!= null){
-							try{
+						} else if (fldName.equals("money") && fldName != null) {
+							try {
 								money = Integer.parseInt(value);
-							}catch (Exception e) {
+							} catch (Exception e) {
 								errorMsg.put("errorMoney", "價錢欄格式錯誤");
 							}
-						}else if(fldName.equals("restStart") && fldName!= null){
-							try{
+						} else if (fldName.equals("restStart") && fldName != null) {
+							try {
 								restStart = Time.valueOf(request.getParameter("restStart").trim());
-							}catch (Exception e) {
+							} catch (Exception e) {
 								errorMsg.put("errorMoney", "價錢欄格式錯誤");
 							}
-						}else if(fldName.equals("restEnd") && fldName!= null){
-							try{
+						} else if (fldName.equals("restEnd") && fldName != null) {
+							try {
 								restEnd = Time.valueOf(request.getParameter("restEnd").trim());
-							}catch (Exception e) {
+							} catch (Exception e) {
 								errorMsg.put("errorMoney", "價錢欄格式錯誤");
 							}
-						}else if(fldName.equals("status") && fldName!= null){
-							try{
+						} else if (fldName.equals("status") && fldName != null) {
+							try {
 								status = Integer.parseInt(request.getParameter("status"));
-							}catch (Exception e) {
+							} catch (Exception e) {
 								errorMsg.put("errorMoney", "價錢欄格式錯誤");
 							}
 						}
-					}else if(fldName.equals("file0")){
+					} else if (fldName.equals("file0")) {
 						fileName0 = RegisterServlet.getFileName(p);
-						if(fileName0 !=null && fileName0.trim().length() > 0){			
+						if (fileName0 != null && fileName0.trim().length() > 0) {
 							is0 = p.getInputStream();
-						}else{
+						} else {
+							
 							errorMsg.put("errPicture", "必須挑選圖片檔");// 顯示要使用者挑選圖片檔
 						}
-					}else if(fldName.equals("file1")){
+					} else if (fldName.equals("file1")) {
 						fileName1 = RegisterServlet.getFileName(p);
-						if(fileName1 !=null && fileName1.trim().length() > 0){		
+						if (fileName1 != null && fileName1.trim().length() > 0) {
 							is1 = p.getInputStream();
-						}else{
+						} else {
 							errorMsg.put("errPicture", "必須挑選圖片檔");// 顯示要使用者挑選圖片檔
 						}
-					}else if(fldName.equals("file2")){
+					} else if (fldName.equals("file2")) {
 						fileName2 = RegisterServlet.getFileName(p);
-						if(fileName2 !=null && fileName2.trim().length() > 0){		
+						if (fileName2 != null && fileName2.trim().length() > 0) {
 							is2 = p.getInputStream();
-						}else{
+						} else {
 							errorMsg.put("errPicture", "必須挑選圖片檔");// 顯示要使用者挑選圖片檔
 						}
-					}else if(fldName.equals("file3")){
+					} else if (fldName.equals("file3")) {
 						fileName3 = RegisterServlet.getFileName(p);
-						if(fileName3 !=null && fileName3.trim().length() > 0){		
+						if (fileName3 != null && fileName3.trim().length() > 0) {
 							is3 = p.getInputStream();
-						}else{
+						} else {
 							errorMsg.put("errPicture", "必須挑選圖片檔");// 顯示要使用者挑選圖片檔
 						}
 					}
 				}
 
-//				if(RestName == null || RestName.trim().length()==0)
-//					errorMsg.put("errorRestNameEmpty", "餐廳名稱欄必須輸入");
-//				if(RestTel==null||RestTel.trim().length()==0)
-//					errorMsg.put("errorRestTel", "餐廳電話欄必須輸入");
-//				if(RestAddr==null||RestAddr.trim().length()==0)
-//					errorMsg.put("errorRestAddr", "餐廳地址欄必須輸入");
-//				if(brief==null||brief.trim().length()==0)
-//					errorMsg.put("errorBrief", "餐廳簡介欄必須輸入");
-//				if(!errorMsg.isEmpty()){
-//					RequestDispatcher rd = request.getRequestDispatcher("Publish.jsp");
-//					rd.forward(request, response);
-//					return;
-//				}
-				System.out.println(3);
+				// if(RestName == null || RestName.trim().length()==0)
+				// errorMsg.put("errorRestNameEmpty", "餐廳名稱欄必須輸入");
+				// if(RestTel==null||RestTel.trim().length()==0)
+				// errorMsg.put("errorRestTel", "餐廳電話欄必須輸入");
+				// if(RestAddr==null||RestAddr.trim().length()==0)
+				// errorMsg.put("errorRestAddr", "餐廳地址欄必須輸入");
+				// if(brief==null||brief.trim().length()==0)
+				// errorMsg.put("errorBrief", "餐廳簡介欄必須輸入");
+				// if(!errorMsg.isEmpty()){
+				// RequestDispatcher rd =
+				// request.getRequestDispatcher("Publish.jsp");
+				// rd.forward(request, response);
+				// return;
+				// }
 			}
-			System.out.println(4);
-
-			try{
-				
+			try {
 				ImagesIo io = new ImagesIo();
-				RestService rserv = new RestService();			
-				byte [] data0 = io.isToByte(is0);
-				RestVO restVO = rserv.update(restId,shopId,RestName, RestTel, RestAddr, Ein, restStart, restEnd, 80, RestNum, data0 , fileName0, brief,status,money);
+				RestService rserv = new RestService();
+				byte[] data0 = null;
+				byte[] data1 = null;
+				byte[] data2 = null;
+				byte[] data3 = null;
+				data0 = is0!=null ? io.isToByte(is0):restVO.getRestImage();
+				restVO = rserv.update(restId, shopId, RestName, RestTel, RestAddr, Ein, restStart, restEnd, restVO.getRestRate(),
+						RestNum, data0, fileName0, brief, status, money);
 				SearchService srv = new SearchService();
 				srv.updateRest(restVO);
-				byte [] data1 = io.isToByte(is1);
-				byte [] data2 = io.isToByte(is2);
-				byte [] data3 = io.isToByte(is3);
-				rpsc.update(restPhotoVO.getRePhotoId(),restId, data1, fileName1, data2, fileName2, data3, fileName3);	
-			}catch (Exception e) {
-				System.out.println(123123);
-				System.err.println(e);
+				
+				RestPhotoVO restPhotoVO = rpsc.getRePohtos(restId);
+				data1 = is1!=null ? io.isToByte(is1):restPhotoVO.getRestImage1();
+				data2 = is2!=null ? io.isToByte(is2):restPhotoVO.getRestImage2();
+				data3 = is3!=null ? io.isToByte(is3):restPhotoVO.getRestImage3();
+				rpsc.update(restPhotoVO.getRePhotoId(), restId, data1, fileName1, data2, fileName2, data3, fileName3);
+			} catch (Exception e) {
 				e.printStackTrace();
 				errorMsg.put("errorIDDup", e.getMessage());
-				RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+				RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
 				rd.forward(request, response);
 				return;
-			}finally {
-				is3.close();
-				is2.close();
-				is1.close();
-				is0.close();
-			}
-		}
-		if ("updateRest".equals(action)) {
-			Map<String,String> errorMsgs = new HashMap<String,String>();
-			request.setAttribute("errorMsgs", errorMsgs);
-			HttpSession session = request.getSession();
-			
-			Integer restId = new Integer(request.getParameter("restId").trim());
-			String restName = request.getParameter("restName");
-			String restTel = request.getParameter("restTel");
-			String restaddr = request.getParameter("restaddr");
-			String brief = request.getParameter("brief");
-			
-			Integer money = new Integer(request.getParameter("money").trim());
-			if (restName == null || restName.trim().length() == 0 || restName.trim().length() > 4)
-				errorMsgs.put("Name", "姓名格式錯誤，不得為零或大於4個國字");
-			
-			if (restTel == null || restTel.trim().length() == 0 || restTel.trim().length() > 10)
-				errorMsgs.put("Tel", "電話格式錯誤，不得為零或大於10");
-			
-			if (restaddr == null || restaddr.trim().length() == 0)
-				errorMsgs.put("Addr", "地址格式錯誤，不得為零");
-			
-			if (brief == null || brief.trim().length() == 0)
-				errorMsgs.put("Brief", "簡介格式錯誤，不得為空");
-			
-			if (request.getParameter("ein").trim() == null || request.getParameter("ein").trim().length() == 0)
-				errorMsgs.put("Ein", "統編格式錯誤，不得為零");
-			
-			if (request.getParameter("restStart") == null || request.getParameter("restStart").trim().length() == 0)
-				errorMsgs.put("Start", "日期格式錯誤，不得為零");
-			
-			if (request.getParameter("restEnd") == null || request.getParameter("restEnd").trim().length() == 0)
-				errorMsgs.put("End", "日期格式錯誤，不得為零");
-			
-			if (request.getParameter("restNum") == null || request.getParameter("restNum").trim().length() == 0)
-				errorMsgs.put("Num", "人數格式錯誤，不得為零");
-			
-			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher rd = request.getRequestDispatcher("/Shop/update_rest_input.jsp");
-				rd.forward(request, response);
-				return;
-			}
-			
-			
-			
-			try {
-				ShopVO sVo = (ShopVO) session.getAttribute("ShopLoginOK");
-				AdminVO aVo = (AdminVO) session.getAttribute("AdminLoginOK");
-				Integer shopId = 0;
-				if(sVo!=null){
-					shopId = sVo.getShopId();
-				}
-				restName = request.getParameter("restName").trim();
-				restTel = request.getParameter("restTel").trim();
-				restaddr = request.getParameter("restaddr").trim();
-				brief = request.getParameter("brief").trim();
-				Integer status = new Integer(request.getParameter("status").trim());
-
-				
-				Integer ein = new Integer(request.getParameter("ein").trim());
-				Time restStart = Time.valueOf(request.getParameter("restStart").trim());
-				Time restEnd = Time.valueOf(request.getParameter("restEnd").trim());
-				Integer restNum = new Integer(request.getParameter("restNum").trim());
-				
-				
-				RestVO restVO = new RestVO();
-				restVO.setFileName(restName);
-				restVO.setRestTel(restTel);
-				restVO.setRestaddr(restaddr);
-				restVO.setEin(ein);
-				restVO.setRestStart(restStart);
-				restVO.setRestEnd(restEnd);
-				restVO.setRestNum(restNum);				
-				restVO.setBrief(brief);
-				restVO.setStatus(status);
-				restVO.setMoney(money);
-				
-				if (!errorMsgs.isEmpty()) {
-					request.setAttribute("restVO", restVO);
-					RequestDispatcher rd = request.getRequestDispatcher("/Shop/update_rest_input.jsp");
-					rd.forward(request, response);
-					return;
-				}
-				
-				RestService rSvc = new RestService();
-				System.out.println(restId);
-				RestVO restVO2 = rSvc.getOneRest(restId);
-				if(aVo!=null){
-					shopId = restVO2.getShopId();
-				}
-				Integer restRate = restVO2.getRestRate();
-				
-				System.out.println(shopId);
-				String fileName = "";
-				long sizeInBytes = 0;
-				InputStream is = null;
-				byte [] data = null;
-
-				Collection<Part> parts = request.getParts();
-				if (parts != null) { // parts裡有東西
-					for (Part p : parts) {
-						if (p.getContentType() != null) {
-							fileName = mbservlet.getFileName(p);
-							if (fileName != null && fileName.trim().length() > 0) {// 判斷檔案名稱							
-								is = p.getInputStream();// 能執行到這邊代表要寫入的資料就是圖片,為了準備寫入資料庫,故上面先宣告一個is放著
-								ImagesIo io = new ImagesIo();
-								data = io.isToByte(is);
-							} else {
-								rSvc = new RestService();
-								restVO = rSvc.getOneRest(restId);
-								fileName = restVO.getFileName();							
-								sizeInBytes = restVO.getRestImage().length;
-								data = restVO.getRestImage();
-							}
-						}
-					}
-				}				
-				
-				restVO = rSvc.update(restId, shopId, restName, restTel, restaddr, ein, restStart, restEnd, restRate, restNum, data, fileName, brief,status,money);
-				//修改完成，準備轉交
-				session.setAttribute("restVO", restVO);
-				SearchService searchsrv = new SearchService();
-				searchsrv.updateRest(restVO);
-				String url = "/Shop/listOneRest.jsp";
-				RequestDispatcher rd = request.getRequestDispatcher(url);
-				rd.forward(request, response);
-				return;
-			} catch (Exception e) {
-				errorMsgs.put("error", "修改失敗");
-				e.printStackTrace();
-				RequestDispatcher rd = request.getRequestDispatcher("/Shop/update_rest_input.jsp");
-				rd.forward(request, response);
-				return;
-			}
+			} 
 		}
 	}
 }

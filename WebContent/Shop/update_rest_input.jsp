@@ -137,8 +137,12 @@ margin-left:2px;
 		xhr.addEventListener("loadend",function(){
 			console.log("loadend");
 			//隱藏Ajax執行中的圖示
-			window.location.href="<%=request.getContextPath()%>/Shop/ShopServlet?action=listRest";
-		})
+			if(${!empty ShopLoginOK}){
+				window.location.href="<%=request.getContextPath()%>/Shop/ShopServlet?action=listRest"
+			}else if(${!empty AdminLoginOK}){
+				window.location.href="<%=request.getContextPath()%>/Admin/AdminServlet?action=listAllRest"
+			}
+		});
 		xhr.open("POST", "ShopServlet"); //document.publish.action			
 		xhr.send(formData);
 		ev.preventDefault();

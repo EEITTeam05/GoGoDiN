@@ -72,26 +72,25 @@ public class OrderSeat extends HttpServlet {
 
 				/* 寄送訂位成功通知 */
 				RestVO restVO = new SearchService().getRestMap().get(restName);
+				String Title = "訂位成功-通知";
 				StringBuffer message = new StringBuffer();
-				message.append("恭喜您在[<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位成功<p>")
+				message.append("恭喜您在[" + restVO.getRestName() + "] 餐廳訂位成功<p>")
 						.append("預位時間:" + date1 + "  " + time1 + "<p>").append("訂位人數:" + pNum + "人");
 
 				String MemAccount = mb.getMemAccount();
 				String ShopAccount = new ShopService().getoneshop(shopId).getShopAccount();
 				MessageService msgsrv = new MessageService();
 				// 收信者 寄件者
-				msgsrv.addMessage(MemAccount, ShopAccount, message.toString(), false,
+				msgsrv.addMessage(MemAccount, ShopAccount, Title,message.toString(), false,
 						new Timestamp(System.currentTimeMillis()));
 
 				message.delete(0, message.length());// 清空內容
 
-				message.append("恭喜有位客人在你的  [<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位成功<p>")
+				message.append("恭喜有位客人在你的  [" + restVO.getRestName() + "] 餐廳訂位成功<p>")
 						.append("訂單人姓名:" + mb.getMemName() + "<p>").append("訂單時間:" + date1 + "  " + time1 + "<p>")
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
-				msgsrv.addMessage(ShopAccount, "admin", message.toString(), false,
+				msgsrv.addMessage(ShopAccount, "admin", Title, message.toString(), false,
 						new Timestamp(System.currentTimeMillis()));
 
 				return;
@@ -135,26 +134,25 @@ public class OrderSeat extends HttpServlet {
 				
 				/* 寄送訂位成功通知 */
 				RestVO restVO = new SearchService().getRestMap().get(restName);
+				String Title = "修改訂位-通知";
 				StringBuffer message = new StringBuffer();
-				message.append("您在[<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位資料已修改成功<p>")
+				message.append("您在[" + restVO.getRestName() + "] 餐廳訂位資料已修改成功<p>")
 						.append("預位時間:" + date1 + "  " + time1 + "<p>").append("訂位人數:" + pNum + "人");
-
+					
 				String MemAccount = odVO.getMemVO().getMemAccount();
 				String ShopAccount = new ShopService().getoneshop(shopId).getShopAccount();
 				MessageService msgsrv = new MessageService();
 				// 收信者 寄件者
-				msgsrv.addMessage(MemAccount, ShopAccount, message.toString(), false,
+				msgsrv.addMessage(MemAccount, ShopAccount, Title ,message.toString(), false,
 						new Timestamp(System.currentTimeMillis()));
 
 				message.delete(0, message.length());// 清空內容
 
-				message.append("您剛剛已修改  [<a href='" + request.getContextPath() + "/SearchPage.do?search="
-						+ restVO.getRestName() + "'>" + restVO.getRestName() + "</a>] 餐廳訂位資料<p>")
+				message.append("您剛剛已修改 [" + restVO.getRestName() + "] 餐廳訂位資料<p>")
 						.append("訂單人姓名:" + odVO.getMemVO().getMemName() + "<p>").append("訂單時間:" + date1 + "  " + time1 + "<p>")
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
-				msgsrv.addMessage(ShopAccount, "admin", message.toString(), false,
+				msgsrv.addMessage(ShopAccount, "admin", Title ,message.toString(), false,
 						new Timestamp(System.currentTimeMillis()));
 
 				return;

@@ -162,6 +162,11 @@ div.carousel-inner {
 								id="recipient-name">
 						</div>
 						<div class="form-group">
+							<label for="recipient-name" class="form-control-label">主旨:</label>
+							<input type="text" class="form-control" 
+								id="message-title">
+						</div>
+						<div class="form-group">
 							<label for="message-text" class="form-control-label">訊息:</label>
 							<textarea class="form-control" id="message-text"></textarea>
 						</div>
@@ -282,7 +287,7 @@ $('#div2').on('change','#datepicker',seat);
 				  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
 				  var modal = $(this);
 				  modal.find('.modal-title').text('寄信給   ' + recipient)
-				  modal.find('.modal-body input').val(recipient.replace("@",''))
+				  modal.find('#recipient-name').val(recipient.replace("@",''))
 				});
 			/* 查看是否還有位置  */
 			function seat(){
@@ -303,6 +308,7 @@ $('#div2').on('change','#datepicker',seat);
 			$('#send').click(function(){
 				$.post('<%=request.getContextPath()%>/MessageServlet',{
 					'RestName':$('#recipient-name').val(),
+					'Title':$('#message-title').val(),
 					'Message':$('#message-text').val(),
 					'action':'MemberSendToShop'
 					},function(data){

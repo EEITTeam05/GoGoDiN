@@ -248,6 +248,7 @@ CREATE TABLE MessageList(
 	MesId INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
 	ReceivedAccount varchar(25),
 	SendAccount varchar(25),
+	title varchar(50) ,
 	Message varchar (250) NULL,
 	isRead tinyint null,
 	sendtime datetime null

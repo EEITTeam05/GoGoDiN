@@ -7,9 +7,16 @@ public class MessageVO implements Serializable {
 	private Integer MesId;
 	private String ReceivedAccount;
 	private String SendAccount;
+	private String Title;
 	private String Message;
 	private Boolean isRead;
 	private Timestamp sendtime;
+	public String getTitle() {
+		return Title;
+	}
+	public void setTitle(String title) {
+		Title = title;
+	}
 	public Timestamp getSendtime() {
 		return sendtime;
 	}

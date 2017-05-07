@@ -90,6 +90,7 @@ public class MessageServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		MemberListVO mb = (MemberListVO) session.getAttribute("LoginOK");
 		String RestName = request.getParameter("RestName");
+		String Title = request.getParameter("Title");
 		String Message = request.getParameter("Message");
 		String action = request.getParameter("action");
 		if ("MemberSendToShop".equals(action)) {
@@ -99,7 +100,7 @@ public class MessageServlet extends HttpServlet {
 				String shopAccount = srv.getoneshop(restVO.getShopId()).getShopAccount();
 				String MemAccount = mb.getMemAccount();
 				MessageService msgsrv = new MessageService();
-				msgsrv.addMessage(shopAccount, MemAccount, Message, false, new Timestamp(System.currentTimeMillis()));
+				msgsrv.addMessage(shopAccount, MemAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 			}

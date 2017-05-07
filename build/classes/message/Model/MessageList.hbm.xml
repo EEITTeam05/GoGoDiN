@@ -10,6 +10,7 @@
 		</id>
 		<property name="ReceivedAccount" column="ReceivedAccount" />
 		<property name="SendAccount" column="SendAccount" />
+		<property name="Title" column="Title" />
 		<property name="Message" column="Message" />
 		<property name="isRead" column="isRead"/>
 		<property name="sendtime" column="sendtime"/>

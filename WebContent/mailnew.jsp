@@ -36,10 +36,9 @@
 				<div class="pure-menu">
 					<ul class="pure-menu-list">
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">收件匣
-								<span class="email-count">(2)</span>
+								<span class="email-count"></span>
 						</a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">訂位通知
-								<span class="email-count">(2)</span>
 						</a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">已加星號</a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">系統通知
@@ -62,8 +61,15 @@
 		<div id="list" class="pure-u-1">
 			<c:forEach var="VO" items="${list}">
 				<c:set var="string1" value="${VO.message}" />
-				<c:set var="string2" value="${fn:substring(string1 , 0, 22)}" />
-				<div class="email-item pure-g" style="cursor: pointer;">
+				<c:set var="string2" value="${fn:substring(string1 , 0, 20)}" />
+				<c:choose>
+					<c:when test="${!VO.isRead}">
+					<div class="email-item email-item-unread pure-g" id="${VO.mesId}" style="cursor: pointer;">
+					</c:when>
+					<c:otherwise>
+					<div class="email-item pure-g" id="${VO.mesId}" style="cursor: pointer;">
+					</c:otherwise>
+				</c:choose>
 					<c:choose>
 						<c:when test="${VO.sendAccount=='admin'}">
 							<div class="pure-u">
@@ -83,9 +89,9 @@
 						<h5 class="email-name">${VO.sendAccount}</h5>
 						<span hidden class="email-time">${VO.sendtime}</span>
 						<h4 class="email-subject">${VO.title}</h4>
-						<p class="email-desc">${string2}</p>
+						<p class="email-desc">${string2}...</p>
 						<div hidden class="email-real">
-							<p>${VO.message}</p>
+							${VO.message}
 						</div>
 					</div>
 				</div>
@@ -104,12 +110,12 @@
 
 					<div class="email-content-controls pure-u-1-2">
 						<button class="secondary-button pure-button" data-toggle='modal' data-target='#sendmail' id="reply">回覆</button>
-						<button class="secondary-button pure-button">轉發</button>
-						<button class="secondary-button pure-button">Move to</button>
+						<button class="secondary-button pure-button" data-toggle='modal' data-target='#sendmail' id="forward">轉發</button>
 					</div>
 				</div>
 
-				<div class="email-content-body" style="width: 920px;"></div>
+				<div class="email-content-body" style="width: 920px;">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -164,10 +170,21 @@
 			// Your application code goes here...
 
 		});
-		$('div.email-item').on(
-				'click',
+		$(function(){
+			$.get('MessageServlet',({'action':'getIsRead'}),function(data){
+				if(data>0){
+					$('span.email-count').text('('+data+')');
+				}
+			});
+		
+		})
+		$('div.email-item').on('click',
 				function() {
 					$('div.email-item').removeClass('email-item-selected');
+					$.post('MessageServlet',{
+						'action':'updateisRead',
+						'messageId':$(this).attr('id')
+					})
 					$(this).attr({
 						'class' : 'email-item email-item-selected pure-g'
 					});
@@ -179,7 +196,7 @@
 					$('p.email-content-subtitle > span').text(
 							$(this).find('span.email-time').text());
 					$('div.email-content-body').html(
-							$(this).find('div.email-real').html());
+							$(this).find('div.email-real').html().replace(/\n/g, "<br>"));
 				}).mouseover(function() {
 			$(this).addClass('email-item-hover');
 		}).mouseout(function() {
@@ -195,14 +212,24 @@
 				modal.find('.modal-title').text('回信給 @' + targetAcconut);
 				modal.find('#recipient-name').val(targetAcconut).prop('disabled',true);
 				modal.find('#message-title').val('RE: '+ $('h1.email-content-title').text())
-			}else{
+				modal.find('#message-text').val('');
+			}else if(target.attr('id')=='send'){
 				var button = $(event.relatedTarget)
 				var modal = $(this);
 				modal.find('.modal-title').text('新訊息');
 				modal.find('#recipient-name').val('').removeAttr('disabled');
-				modal.find('#message-title').val('')
+				modal.find('#message-title').val('');
+				modal.find('#message-text').val('');
+			}else if(target.attr('id')=='forward'){
+				var button = $(event.relatedTarget)
+				var modal = $(this);
+				modal.find('.modal-title').text('轉發');
+				modal.find('#recipient-name').val('').removeAttr('disabled');
+				modal.find('#message-title').val($('h1.email-content-title').text());
+				modal.find('#message-text').text($('div.email-content-body').html().replace(/<br\s*[\/]?>/gi,"\n").trim());
 			}
 		});
+				
 		$('#sendEmail').click(function(){
 			if($('#recipient-name').val()==""){
 				swal("錯誤!","收件者未填寫","error");

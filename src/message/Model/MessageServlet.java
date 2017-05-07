@@ -33,9 +33,6 @@ import register.model.RegisterServiceDAO;
 public class MessageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public MessageServlet() {
-		super();
-	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -60,11 +57,11 @@ public class MessageServlet extends HttpServlet {
 				Account = admin.getAdminAcc();
 			}
 			List<MessageVO> list = msrv.getReceive(Account);
-			for(MessageVO messageVO : list){
-				if(!messageVO.getIsRead()){
-					msrv.updateIsRead(messageVO.getMesId());
-				}
-			}
+//			for(MessageVO messageVO : list){
+//				if(!messageVO.getIsRead()){
+//					msrv.updateIsRead(messageVO.getMesId());
+//				}
+//			}
 			request.setAttribute("list", list);
 			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
 			rd.forward(request, response);
@@ -79,7 +76,6 @@ public class MessageServlet extends HttpServlet {
 			} else if (admin != null) {
 				Account = admin.getAdminAcc();
 			}
-			
 			out.print(msrv.getIsNotReadCount(Account).toString());
 		}
 	}
@@ -96,13 +92,14 @@ public class MessageServlet extends HttpServlet {
 		String Message = request.getParameter("Message");
 		String action = request.getParameter("action");
 		String ReciveAccount = request.getParameter("ReciveAccount");
+		String MessageId = request.getParameter("messageId");
+		MessageService msgsrv = new MessageService();
 		if ("MemberSendToShop".equals(action)) {
 			try {
 				RestVO restVO = new SearchService().getRestMap().get(RestName);
 				ShopService srv = new ShopService();
 				String shopAccount = srv.getoneshop(restVO.getShopId()).getShopAccount();
 				String MemAccount = mb.getMemAccount();
-				MessageService msgsrv = new MessageService();
 				msgsrv.addMessage(shopAccount, MemAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
@@ -117,11 +114,12 @@ public class MessageServlet extends HttpServlet {
 				} else if (admin != null) {
 					SendAccount = admin.getAdminAcc();
 				}
-				MessageService msgsrv = new MessageService();
 				msgsrv.addMessage(ReciveAccount, SendAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
 			}catch (Exception e) {
 				// TODO: handle exception
 			}
+		}else if("updateisRead".equals(action)){
+			msgsrv.updateIsRead(new Integer(MessageId));
 		}
 	}
 }

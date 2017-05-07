@@ -10,10 +10,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description"
 	content="A layout example that shows off a responsive email layout.">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"> -->
 <link rel="stylesheet"
 	href="https://unpkg.com/purecss@0.6.2/build/pure-min.css"
 	integrity="sha384-" crossorigin="anonymous">
+	
+<link rel="stylesheet" href="css/bootstrapchange.css">
 <link rel="stylesheet" href="css/layouts/email.css">
+<link rel="stylesheet" href="css/sweetalert.css">
+
 <title>Insert title here</title>
 </head>
 <body>
@@ -23,11 +28,11 @@
 			<div class="nav-inner">
 				<a class="navbar-brand"
 					href="<%=request.getContextPath()%>/index.jsp"
-					style="height: 100px"> <img class="d-inline-block align-top"
+					style="height: 50px"> <img class="d-inline-block align-top"
 					src="<%=request.getContextPath()%>/images/Logo.png"
 					style="width: 150px;">
 				</a>
-				<button class="primary-button pure-button">寄信</button>
+				<button class="primary-button pure-button" data-toggle='modal' data-target='#sendmail' id="send">寄信</button>
 				<div class="pure-menu">
 					<ul class="pure-menu-list">
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">收件匣
@@ -70,8 +75,7 @@
 						<c:otherwise>
 							<div class="pure-u">
 								<img width="64" height="64" alt="${VO.mesId}"
-									class="email-avatar"
-									src="<%=request.getContextPath()%>/init/getImage?id=${VO.sendAccount}&type=AccountImg">
+									class="email-avatar" src="<%=request.getContextPath()%>/init/getImage?id=${VO.sendAccount}&type=AccountImg">
 							</div>
 						</c:otherwise>
 					</c:choose>
@@ -87,6 +91,7 @@
 				</div>
 			</c:forEach>
 		</div>
+		
 		<div hidden id="main" class="pure-u-1">
 			<div class="email-content">
 				<div class="email-content-header pure-g">
@@ -98,8 +103,8 @@
 					</div>
 
 					<div class="email-content-controls pure-u-1-2">
-						<button class="secondary-button pure-button">Reply</button>
-						<button class="secondary-button pure-button">Forward</button>
+						<button class="secondary-button pure-button" data-toggle='modal' data-target='#sendmail' id="reply">回覆</button>
+						<button class="secondary-button pure-button">轉發</button>
 						<button class="secondary-button pure-button">Move to</button>
 					</div>
 				</div>
@@ -108,9 +113,44 @@
 			</div>
 		</div>
 	</div>
+<div class="modal fade" id="sendmail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="recipient-name" class="form-control-label">收件者:</label>
+            <input type="text" class="form-control" style="width: 450px;"  id="recipient-name" disabled="disabled">
+          </div>
+          <div class="form-group">
+							<label for="recipient-name" class="form-control-label">主旨:</label>
+							<input type="text" style="width: 450px;" class="form-control" 
+								id="message-title">
+		</div>
+          <div class="form-group">
+            <label for="message-text" class="form-control-label">訊息:</label>
+            <textarea class="form-control" style="width: 450px;" id="message-text"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+        <button type="button" class="btn btn-primary" id="sendEmail">寄信</button>
+      </div>
+    </div>
+  </div>
+</div>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	<script src="https://yui-s.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+	<script type="text/javascript" src="js/sweetalert.min.js"></script>
 	<script>
 		YUI().use('node-base', 'node-event-delegate', function(Y) {
 
@@ -144,6 +184,43 @@
 			$(this).addClass('email-item-hover');
 		}).mouseout(function() {
 			$(this).removeClass('email-item-hover');
+		});
+		
+		$('#sendmail').on('show.bs.modal',function(event){
+			var target = $(event.relatedTarget);
+			if(target.attr('id')=='reply'){
+				var button = $(event.relatedTarget)
+				var modal = $(this);
+				var targetAcconut =  $('p.email-content-subtitle > a').text();
+				modal.find('.modal-title').text('回信給 @' + targetAcconut);
+				modal.find('#recipient-name').val(targetAcconut).prop('disabled',true);
+				modal.find('#message-title').val('RE: '+ $('h1.email-content-title').text())
+			}else{
+				var button = $(event.relatedTarget)
+				var modal = $(this);
+				modal.find('.modal-title').text('新訊息');
+				modal.find('#recipient-name').val('').removeAttr('disabled');
+				modal.find('#message-title').val('')
+			}
+		});
+		$('#sendEmail').click(function(){
+			if($('#recipient-name').val()==""){
+				swal("錯誤!","收件者未填寫","error");
+				return
+			}
+			if($('#message-title').val()==""){
+				swal("錯誤!","主旨未填寫","error");
+				return
+			}
+			$.post('<%= request.getContextPath()%>/MessageServlet',{
+				'ReciveAccount':$('#recipient-name').val(),
+				'Title':$('#message-title').val(),
+				'Message':$('#message-text').val(),
+				'action':'newMailSend'
+			},function(data){
+				$('#sendmail').modal('hide')
+				swal("信件已寄出!","","success");
+			});
 		});
 	</script>
 

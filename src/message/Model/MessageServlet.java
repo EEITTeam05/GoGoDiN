@@ -89,10 +89,13 @@ public class MessageServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		HttpSession session = request.getSession();
 		MemberListVO mb = (MemberListVO) session.getAttribute("LoginOK");
+		ShopVO svo = (ShopVO) session.getAttribute("ShopLoginOK");
+		AdminVO admin = (AdminVO) session.getAttribute("AdminLoginOK");
 		String RestName = request.getParameter("RestName");
 		String Title = request.getParameter("Title");
 		String Message = request.getParameter("Message");
 		String action = request.getParameter("action");
+		String ReciveAccount = request.getParameter("ReciveAccount");
 		if ("MemberSendToShop".equals(action)) {
 			try {
 				RestVO restVO = new SearchService().getRestMap().get(RestName);
@@ -103,6 +106,21 @@ public class MessageServlet extends HttpServlet {
 				msgsrv.addMessage(shopAccount, MemAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
+			}
+		}else if("newMailSend".equals(action)){
+			String SendAccount = null;
+			try{
+				if (mb != null) {
+					SendAccount = mb.getMemAccount();
+				} else if (svo != null) {
+					SendAccount = svo.getShopAccount();
+				} else if (admin != null) {
+					SendAccount = admin.getAdminAcc();
+				}
+				MessageService msgsrv = new MessageService();
+				msgsrv.addMessage(ReciveAccount, SendAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
+			}catch (Exception e) {
+				// TODO: handle exception
 			}
 		}
 	}

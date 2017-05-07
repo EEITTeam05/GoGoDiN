@@ -20,6 +20,12 @@
 	<hr>
 	<table border='1' bordercolor='#CCCCFF' width='800' align="center">
 		<tr align='center' valign='middle'>
+			<th></th>
+			<td>
+			<img height='200px' width='180px' src='${pageContext.servletContext.contextPath}/init/getImage?id=${ShopLoginOK.shopAccount}&type=AccountImg'>
+			</td>
+		</tr>
+		<tr align='center' valign='middle'>
 			<th>編號</th>
 			<td>${ShopLoginOK.shopId}</td>
 		</tr>

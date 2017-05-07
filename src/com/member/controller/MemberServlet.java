@@ -135,7 +135,6 @@ public class MemberServlet extends HttpServlet {
 				String mlineId = request.getParameter("mlineId").trim();
 				String memAddr = request.getParameter("memAddr").trim();
 
-				@SuppressWarnings("deprecation")				
 
 				MemberListVO memVO = new MemberListVO();
 				memVO.setMemId(memId);
@@ -148,9 +147,7 @@ public class MemberServlet extends HttpServlet {
 				memVO.setEmail(email);
 				memVO.setMlineId(mlineId);
 				memVO.setMemAddr(memAddr);
-				
 				memVO.setMemberImage(data);
-				
 				memVO.setFileName(fileName);
 
 				if (!errorMsgs.isEmpty()) {

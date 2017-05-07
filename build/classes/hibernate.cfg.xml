@@ -11,7 +11,7 @@
 <!-- 		<property name="hibernate.connection.url">jdbc:sqlserver://starbooksdb06.database.windows.net:1433;database=GoGoDiN</property> -->
 <!-- 		<property name="hibernate.connection.username">starbookuser@starbooksdb06</property> -->
 <!-- 		<property name="hibernate.connection.password">Sa123456</property>        -->
-		<property name="hibernate.connection.url">jdbc:sqlserver://192.168.1.43:1433;database=GoGoDiN</property>
+		<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;database=GoGoDiN</property>
 		<property name="hibernate.connection.username">sa</property>
 		<property name="hibernate.connection.password">sa123456</property>       
 		<property name="hibernate.connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>

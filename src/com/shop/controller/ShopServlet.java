@@ -28,6 +28,8 @@ import org.json.simple.JSONObject;
 import com.admin.Model.AdminVO;
 import com.img.Io.ImagesIo;
 import com.login_Model.loginService;
+import com.member.Model.MemberListVO;
+import com.member.Model.MemberService;
 import com.member.controller.MemberServlet;
 import com.order.Model.OrderService;
 import com.order.Model.OrderVO;
@@ -204,7 +206,6 @@ public class ShopServlet extends HttpServlet {
 			Map<String, String> errorMsgs = new HashMap<String, String>();
 			request.setAttribute("errorMsgs", errorMsgs);
 			HttpSession session = request.getSession();
-
 			Integer shopId = new Integer(request.getParameter("shopId").trim());
 			String shopAcc = request.getParameter("shopAcc").trim();
 			String shopPswd = request.getParameter("shopPswd");
@@ -213,8 +214,27 @@ public class ShopServlet extends HttpServlet {
 			String shopTel = request.getParameter("shopTel");
 			String shopMail = request.getParameter("shopMail");
 			String shopLine = request.getParameter("shopLine");
-			byte[] data = request.getParameter("file1").getBytes();
-			
+			String fileName = "";
+			InputStream is = null;
+			byte[] data = null;
+			Collection<Part> parts = request.getParts();
+			if (parts != null) { // parts裡有東西
+				for (Part p : parts) {
+					if (p.getContentType() != null) {
+						fileName = MemberServlet.getFileName(p);
+						if (fileName != null && fileName.trim().length() > 0) {// 判斷檔案名稱							
+							is = p.getInputStream();// 能執行到這邊代表要寫入的資料就是圖片,為了準備寫入資料庫,故上面先宣告一個is放著
+							ImagesIo io = new ImagesIo();
+							data = io.isToByte(is);
+						} else {
+							ShopService shopsrv = new ShopService();
+							ShopVO shopVO = shopsrv.getoneshop(shopId);
+							fileName = shopVO.getFileName();							
+							data = shopVO.getShopImage();
+						}
+					}
+				}
+			}
 			if (shopPswd == null || shopPswd.trim().length() == 0 || shopPswd.trim().length() > 12)
 				errorMsgs.put("Pswd", "密碼格式錯誤，不得為零或大於12");
 
@@ -253,7 +273,8 @@ public class ShopServlet extends HttpServlet {
 				shopVO.setShopTel(shopTel);
 				shopVO.setShopEmail(shopMail);
 				shopVO.setSlineId(shopLine);
-
+				shopVO.setShopImage(data);
+				shopVO.setFileName(fileName);
 				if (!errorMsgs.isEmpty()) {
 					request.setAttribute("shopVO", shopVO);
 					RequestDispatcher rd = request.getRequestDispatcher("/Shop/update_shop_input.jsp");
@@ -261,9 +282,9 @@ public class ShopServlet extends HttpServlet {
 					return;
 				}
 				ShopService sSvc = new ShopService();
-				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine, 0,data,"filename");
+				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine, 0,data,fileName);
 				loginService ls = new loginService();
-				ls.populateShopList();
+				ls.updateShop(shopVO);
 				// 修改完成，準備轉交
 				session.setAttribute("ShopLoginOK", shopVO);
 				String url = "/Shop/listOneShop.jsp";

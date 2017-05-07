@@ -114,10 +114,10 @@ public class AdminServlet extends HttpServlet {
 			String shopMail = request.getParameter("shopMail");
 			String shopLine = request.getParameter("shopLine");
 			Integer status = new Integer(request.getParameter("status"));
-			String fileName = request.getParameter("fileName").trim();
 			ShopService spsrv = new ShopService();
 			ShopVO shopVO = spsrv.getoneshop(shopId);
 			byte[] data = shopVO.getShopImage();
+			String filname = shopVO.getFileName();
 			if (shopName == null || shopName.trim().length() == 0 || shopName.trim().length() > 4)
 				errorMsgs.put("Name", "姓名格式錯誤，不得為零或大於4個國字");
 			
@@ -160,7 +160,7 @@ public class AdminServlet extends HttpServlet {
 					return;
 				}
 				ShopService sSvc = new ShopService();
-				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine,status,data,fileName);
+				shopVO = sSvc.update(shopId, shopAcc, shopPswd, shopName, shopIdd, shopTel, shopMail, shopLine,status,data,filname);
 				
 				//修改完成，準備轉交
 				List<ShopVO> listShop = sSvc.getAll();

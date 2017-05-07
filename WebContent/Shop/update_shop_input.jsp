@@ -30,8 +30,14 @@
 	<font size="-1" color="red">${errorMsgs.Mail}</font>
 	<font size="-1" color="red">${errorMsgs.Line}</font>
 </c:if>
-	<form method="post" action="ShopServlet">
+	<form method="post" action="ShopServlet" enctype="multipart/form-data">
 		<table border='1' bordercolor='#CCCCFF' width='800' height='750' align='center'>
+			<tr>
+				<th></th>
+				<td><img height='200px' width='180px'
+					          src='${pageContext.servletContext.contextPath}/init/getImage?id=${ShopLoginOK.shopAccount}&type=AccountImg'>
+				</td>
+			</tr>
 			<tr>
 				<th>帳號</th>
 				<td style="font-weight:bold;">${ShopLoginOK.shopAccount}</td>
@@ -75,5 +81,21 @@
 			</tr>
 		</table>
 	</form>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	function preview(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('td > img').attr({'src':e.target.result,'id':'change'});
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("body").on("change", "input[name='file1']", function (){
+        preview(this);
+    })
+	</script>
 </body>
 </html>

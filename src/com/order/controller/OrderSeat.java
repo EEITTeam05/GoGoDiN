@@ -95,11 +95,11 @@ public class OrderSeat extends HttpServlet {
 
 				message.delete(0, message.length());// 清空內容
 
-				message.append("恭喜有位客人在你的  [" + restVO.getRestName() + "] 餐廳訂位成功 " +(char)13)
+				message.append(mb.getMemName() + "在你的  [" + restVO.getRestName() + "] 餐廳訂位成功 " +(char)13)
 						.append("訂單人姓名:" + mb.getMemName() + (char)13).append("訂單時間:" + date1 + "  " + time1 + (char)13)
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
-				msgsrv.addMessage(ShopAccount, "admin", Title, message.toString(), false, 3 ,
+				msgsrv.addMessage(ShopAccount,MemAccount, Title, message.toString(), false, 2 ,
 						new Timestamp(System.currentTimeMillis()));
 
 				return;
@@ -161,7 +161,7 @@ public class OrderSeat extends HttpServlet {
 				String ShopAccount = new ShopService().getoneshop(shopId).getShopAccount();
 				MessageService msgsrv = new MessageService();
 				// 收信者 寄件者
-				msgsrv.addMessage(MemAccount, ShopAccount, Title ,message.toString(), false, 1,
+				msgsrv.addMessage(MemAccount, "系統通知", Title ,message.toString(), false, 3,
 						new Timestamp(System.currentTimeMillis()));
 
 				message.delete(0, message.length());// 清空內容
@@ -170,7 +170,7 @@ public class OrderSeat extends HttpServlet {
 						.append("訂單人姓名:" + odVO.getMemVO().getMemName() + (char)13).append("訂單時間:" + date1 + "  " + time1 + (char)13)
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
-				msgsrv.addMessage(ShopAccount, "admin", Title ,message.toString(), false,2,
+				msgsrv.addMessage(ShopAccount, "系統通知" , Title ,message.toString(), false,3,
 						new Timestamp(System.currentTimeMillis()));
 
 				return;

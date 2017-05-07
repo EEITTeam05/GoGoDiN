@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="css/layouts/email.css">
 <link rel="stylesheet" href="css/sweetalert.css">
 
-<title>Insert title here</title>
+<title>GoGoDiN E-mail</title>
 </head>
 <body>
 	<div id="layout" class="content pure-g">
@@ -35,16 +35,16 @@
 				<button class="primary-button pure-button" data-toggle='modal' data-target='#sendmail' id="send">寄信</button>
 				<div class="pure-menu">
 					<ul class="pure-menu-list">
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link">收件匣
+						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getNormalmail" class="pure-menu-link">一般信件
 								<span class="email-count"></span>
 						</a></li>
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link">訂位通知
+						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getOrdermail" class="pure-menu-link">訂位通知
 						</a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">已加星號</a></li>
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link">系統通知
+						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getSystemmail" class="pure-menu-link">系統通知
 						</a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">送件匣</a></li>
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link">所有信件</a></li>
+						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getMymail" class="pure-menu-link">所有信件</a></li>
 						<li class="pure-menu-heading">Labels</li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link"><span
 								class="email-label-personal"></span>一般</a></li>
@@ -64,14 +64,14 @@
 				<c:set var="string2" value="${fn:substring(string1 , 0, 20)}" />
 				<c:choose>
 					<c:when test="${!VO.isRead}">
-					<div class="email-item email-item-unread pure-g" id="${VO.mesId}" style="cursor: pointer;">
+					<div class="email-item email-item-unread pure-g" id="${VO.mesId}" data-type="${VO.mailType}" style="cursor: pointer;">
 					</c:when>
 					<c:otherwise>
-					<div class="email-item pure-g" id="${VO.mesId}" style="cursor: pointer;">
+					<div class="email-item pure-g" id="${VO.mesId}" data-type="${VO.mailType}" style="cursor: pointer;">
 					</c:otherwise>
 				</c:choose>
 					<c:choose>
-						<c:when test="${VO.sendAccount=='admin'}">
+						<c:when test="${VO.sendAccount=='系統通知'}">
 							<div class="pure-u">
 								<img width="64" height="64" alt="${VO.mesId}"
 									class="email-avatar"
@@ -170,34 +170,42 @@
 			// Your application code goes here...
 
 		});
-		$(function(){
+		function getisReadCount(){
 			$.get('MessageServlet',({'action':'getIsRead'}),function(data){
 				if(data>0){
 					$('span.email-count').text('('+data+')');
+				}else{
+					$('span.email-count').text('');
 				}
 			});
-		
+		}
+		$(function(){
+			getisReadCount();
+			
 		})
-		$('div.email-item').on('click',
-				function() {
-					$('div.email-item').removeClass('email-item-selected');
-					$.post('MessageServlet',{
-						'action':'updateisRead',
-						'messageId':$(this).attr('id')
-					})
-					$(this).attr({
-						'class' : 'email-item email-item-selected pure-g'
-					});
-					$('#main').removeAttr('hidden');
-					$('h1.email-content-title').text(
-							$(this).find('h4.email-subject').text());
-					$('p.email-content-subtitle > a').text(
-							$(this).find('h5.email-name').text());
-					$('p.email-content-subtitle > span').text(
-							$(this).find('span.email-time').text());
-					$('div.email-content-body').html(
-							$(this).find('div.email-real').html().replace(/\n/g, "<br>"));
-				}).mouseover(function() {
+		$('div.email-item').on('mousedown',function(){
+			$.post('MessageServlet',{
+				'action':'updateisRead',
+				'messageId':$(this).attr('id')
+			})
+			
+		}).on('mouseup',function(){
+			getisReadCount();
+			$('div.email-item').removeClass('email-item-selected');
+			$(this).attr({
+				'class' : 'email-item email-item-selected pure-g'
+			});
+			$('#main').removeAttr('hidden');
+			$('h1.email-content-title').text(
+					$(this).find('h4.email-subject').text());
+			$('p.email-content-subtitle > a').text(
+					$(this).find('h5.email-name').text());
+			$('p.email-content-subtitle > span').text(
+					$(this).find('span.email-time').text());
+			$('div.email-content-body').html(
+					$(this).find('div.email-real').html().replace(/\n/g, "<br>"));
+		})
+		$('div.email-item').mouseover(function() {
 			$(this).addClass('email-item-hover');
 		}).mouseout(function() {
 			$(this).removeClass('email-item-hover');
@@ -225,8 +233,8 @@
 				var modal = $(this);
 				modal.find('.modal-title').text('轉發');
 				modal.find('#recipient-name').val('').removeAttr('disabled');
-				modal.find('#message-title').val($('h1.email-content-title').text());
-				modal.find('#message-text').text($('div.email-content-body').html().replace(/<br\s*[\/]?>/gi,"\n").trim());
+				modal.find('#message-title').val('轉發: '+$('h1.email-content-title').text());
+				modal.find('#message-text').val($('div.email-content-body').html().replace(/<br\s*[\/]?>/gi,"\n").trim());
 			}
 		});
 				

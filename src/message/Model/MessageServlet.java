@@ -47,22 +47,53 @@ public class MessageServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		String Account = null;
 		MessageService msrv = new MessageService();
+		/* 判斷查信件者身分 */
+		if (mb != null) {
+			Account = mb.getMemAccount();
+		} else if (svo != null) {
+			Account = svo.getShopAccount();
+		} else if (admin != null) {
+			Account = admin.getAdminAcc();
+		}
 		if ("getMymail".equals(action)) {
-			/* 判斷查信件者身分 */
-			if (mb != null) {
-				Account = mb.getMemAccount();
-			} else if (svo != null) {
-				Account = svo.getShopAccount();
-			} else if (admin != null) {
-				Account = admin.getAdminAcc();
-			}
 			List<MessageVO> list = msrv.getReceive(Account);
-//			for(MessageVO messageVO : list){
-//				if(!messageVO.getIsRead()){
-//					msrv.updateIsRead(messageVO.getMesId());
-//				}
-//			}
 			request.setAttribute("list", list);
+			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
+			rd.forward(request, response);
+			return;
+		}else if("getNormalmail".equals(action)){
+			List<MessageVO> list = msrv.getReceive(Account);
+			List<MessageVO> listtype2 = new ArrayList<>();
+			for(MessageVO messageVO : list){
+				if(messageVO.getMailType()==1){
+					listtype2.add(messageVO);
+				}
+			}
+			request.setAttribute("list", listtype2);
+			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
+			rd.forward(request, response);
+			return;
+		}else if("getOrdermail".equals(action)){
+			List<MessageVO> list = msrv.getReceive(Account);
+			List<MessageVO> listtype2 = new ArrayList<>();
+			for(MessageVO messageVO : list){
+				if(messageVO.getMailType()==2){
+					listtype2.add(messageVO);
+				}
+			}
+			request.setAttribute("list", listtype2);
+			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
+			rd.forward(request, response);
+			return;
+		}else if("getSystemmail".equals(action)){
+			List<MessageVO> list = msrv.getReceive(Account);
+			List<MessageVO> listtype2 = new ArrayList<>();
+			for(MessageVO messageVO : list){
+				if(messageVO.getMailType()==3){
+					listtype2.add(messageVO);
+				}
+			}
+			request.setAttribute("list", listtype2);
 			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
 			rd.forward(request, response);
 			return;

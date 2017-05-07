@@ -13,7 +13,7 @@ public class MessageService {
 		dao = new MessageDAO();
 	}
 
-	public MessageVO addMessage(String ReceivedAccount, String SendAccount,String title, String Message,boolean isRead,Timestamp sendtime)
+	public MessageVO addMessage(String ReceivedAccount, String SendAccount,String title, String Message,boolean isRead,Integer mailType,Timestamp sendtime)
 			throws IOException {
 
 		MessageVO mesVO = new MessageVO();
@@ -22,12 +22,13 @@ public class MessageService {
 		mesVO.setTitle(title);
 		mesVO.setMessage(Message);
 		mesVO.setIsRead(isRead);
+		mesVO.setMailType(mailType);
 		mesVO.setSendtime(sendtime);
 		dao.insert(mesVO);
 		return mesVO;
 	}
 
-	public MessageVO update(Integer MesId, String ReceivedAccount,String title, String SendAccount, String Message,boolean isRead,Timestamp sendtime) {
+	public MessageVO update(Integer MesId, String ReceivedAccount,String title, String SendAccount, String Message,boolean isRead,Integer mailType, Timestamp sendtime) {
 
 		MessageVO mesVO = new MessageVO();
 		mesVO.setReceivedAccount(ReceivedAccount);
@@ -35,6 +36,7 @@ public class MessageService {
 		mesVO.setTitle(title);
 		mesVO.setMessage(Message);
 		mesVO.setIsRead(isRead);
+		mesVO.setMailType(mailType);
 		mesVO.setSendtime(sendtime);
 		dao.update(mesVO);
 

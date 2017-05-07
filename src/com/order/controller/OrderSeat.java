@@ -76,12 +76,21 @@ public class OrderSeat extends HttpServlet {
 				StringBuffer message = new StringBuffer();
 				message.append("恭喜您在[" + restVO.getRestName() + "] 餐廳訂位成功"+(char)13)
 						.append("預位時間:" + date1 + "  " + time1 + (char)13).append("訂位人數:" + pNum + "人");
-
+				/*
+				 * 
+				 * 
+				 * 
+				 * mailType 1= 一般寄信     2= 訂位通知(業主寄給會員)  3= 系統通知(管理者寄給業主)  
+				 *            ********     *********************     **********************
+				 *
+				 *
+				 */ 
+				
 				String MemAccount = mb.getMemAccount();
 				String ShopAccount = new ShopService().getoneshop(shopId).getShopAccount();
 				MessageService msgsrv = new MessageService();
 				// 收信者 寄件者
-				msgsrv.addMessage(MemAccount, ShopAccount, Title,message.toString(), false,
+				msgsrv.addMessage(MemAccount, ShopAccount, Title,message.toString(), false,2,
 						new Timestamp(System.currentTimeMillis()));
 
 				message.delete(0, message.length());// 清空內容
@@ -90,7 +99,7 @@ public class OrderSeat extends HttpServlet {
 						.append("訂單人姓名:" + mb.getMemName() + (char)13).append("訂單時間:" + date1 + "  " + time1 + (char)13)
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
-				msgsrv.addMessage(ShopAccount, "admin", Title, message.toString(), false,
+				msgsrv.addMessage(ShopAccount, "admin", Title, message.toString(), false, 3 ,
 						new Timestamp(System.currentTimeMillis()));
 
 				return;
@@ -131,6 +140,15 @@ public class OrderSeat extends HttpServlet {
 				List<OrderVO> listOrderDetail = oSvc.findByRestId(restId);
 				session.setAttribute("listOrderDetail",listOrderDetail);
 				
+				/*
+				 * 
+				 * 
+				 * 
+				 * mailType 1= 一般寄信     2= 訂位通知(業主寄給會員)  3= 系統通知(管理者寄給業主)  
+				 *            ********     *********************     **********************
+				 *
+				 *
+				 */ 
 				
 				/* 寄送訂位成功通知 */
 				RestVO restVO = new SearchService().getRestMap().get(restName);
@@ -143,7 +161,7 @@ public class OrderSeat extends HttpServlet {
 				String ShopAccount = new ShopService().getoneshop(shopId).getShopAccount();
 				MessageService msgsrv = new MessageService();
 				// 收信者 寄件者
-				msgsrv.addMessage(MemAccount, ShopAccount, Title ,message.toString(), false,
+				msgsrv.addMessage(MemAccount, ShopAccount, Title ,message.toString(), false, 1,
 						new Timestamp(System.currentTimeMillis()));
 
 				message.delete(0, message.length());// 清空內容
@@ -152,7 +170,7 @@ public class OrderSeat extends HttpServlet {
 						.append("訂單人姓名:" + odVO.getMemVO().getMemName() + (char)13).append("訂單時間:" + date1 + "  " + time1 + (char)13)
 						.append("訂位人數:" + pNum + "人");
 				// 收信者 寄件者
-				msgsrv.addMessage(ShopAccount, "admin", Title ,message.toString(), false,
+				msgsrv.addMessage(ShopAccount, "admin", Title ,message.toString(), false,2,
 						new Timestamp(System.currentTimeMillis()));
 
 				return;

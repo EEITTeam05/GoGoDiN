@@ -251,6 +251,7 @@ CREATE TABLE MessageList(
 	title varchar(50) ,
 	Message varchar (250) NULL,
 	isRead tinyint null,
+	MailType int ,
 	sendtime datetime null
 )
 

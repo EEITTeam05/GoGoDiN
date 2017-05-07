@@ -11,6 +11,14 @@ public class MessageVO implements Serializable {
 	private String Message;
 	private Boolean isRead;
 	private Timestamp sendtime;
+	private Integer MailType;
+	
+	public Integer getMailType() {
+		return MailType;
+	}
+	public void setMailType(Integer mailType) {
+		MailType = mailType;
+	}
 	public String getTitle() {
 		return Title;
 	}

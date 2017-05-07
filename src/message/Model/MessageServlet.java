@@ -79,7 +79,15 @@ public class MessageServlet extends HttpServlet {
 			out.print(msrv.getIsNotReadCount(Account).toString());
 		}
 	}
-
+	/*
+	 * 
+	 * 
+	 * 
+	 * mailType 1= 一般寄信     2= 訂位通知(業主寄給會員)  3= 系統通知(管理者寄給業主)  
+	 *            ********     *********************     **********************
+	 *
+	 *
+	 */        
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -100,7 +108,7 @@ public class MessageServlet extends HttpServlet {
 				ShopService srv = new ShopService();
 				String shopAccount = srv.getoneshop(restVO.getShopId()).getShopAccount();
 				String MemAccount = mb.getMemAccount();
-				msgsrv.addMessage(shopAccount, MemAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
+				msgsrv.addMessage(shopAccount, MemAccount,Title, Message, false,1, new Timestamp(System.currentTimeMillis()));
 			} catch (Exception e) {
 				System.err.println(e.getMessage());
 			}
@@ -114,7 +122,7 @@ public class MessageServlet extends HttpServlet {
 				} else if (admin != null) {
 					SendAccount = admin.getAdminAcc();
 				}
-				msgsrv.addMessage(ReciveAccount, SendAccount,Title, Message, false, new Timestamp(System.currentTimeMillis()));
+				msgsrv.addMessage(ReciveAccount, SendAccount,Title, Message, false,1, new Timestamp(System.currentTimeMillis()));
 			}catch (Exception e) {
 				// TODO: handle exception
 			}

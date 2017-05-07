@@ -14,5 +14,6 @@
 		<property name="Message" column="Message" />
 		<property name="isRead" column="isRead"/>
 		<property name="sendtime" column="sendtime"/>
+		<property name="MailType" column="MailType"/>
 	</class>
 </hibernate-mapping>

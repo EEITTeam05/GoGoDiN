@@ -116,8 +116,8 @@ table th {
 					</a>
 					<br>
 					<br>
-					<a class="btn btn-danger" data-id="${favoriteVO.restVO.restId}" id="cancel2">
-					   <i class="fa fa-trash-o fa-lg"></i> 刪除</a>
+					<a class="btn btn-danger" data-id="${favoriteVO.restVO.restId}" style="color: white" id="cancel2">
+					   <i  class="fa fa-trash-o fa-lg"></i> 刪除</a>
 					</td>
 					
 				</tr>

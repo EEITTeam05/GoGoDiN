@@ -82,13 +82,14 @@
 						</c:otherwise>
 					</c:choose>
 					<div class="pure-u-3-4">
-						<h5 class="email-name">${VO.sendAccount}</h5>
+						<h5 class="email-name">${VO.sendAccount}<small class="float-right">${VO.sendtime}</small></h5>
+						<span hidden class="send-account">${VO.sendAccount}</span>
 						<span hidden class="email-time">${VO.sendtime}</span>
 						<h4 class="email-subject">${VO.title}
+						</h4>
 						<c:if test="${!VO.isRead}">
 							<span class="label label-default float-right">New</span>
 						</c:if>
-						</h4>
 						<p class="email-desc">${string2}...</p>
 						<div hidden class="email-real">
 							${VO.message}
@@ -97,7 +98,7 @@
 				</div>
 			</c:forEach>
 		</div>
-		
+
 		<div hidden id="main" class="pure-u-1">
 			<div class="email-content">
 				<div class="email-content-header pure-g">
@@ -157,6 +158,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	<script src="https://yui-s.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
 	<script type="text/javascript" src="js/sweetalert.min.js"></script>
+	<script type="text/javascript" src="js/jquerydate.js"></script>
 	<script>
 		YUI().use('node-base', 'node-event-delegate', function(Y) {
 
@@ -182,7 +184,20 @@
 		}
 		$(function(){
 			getisReadCount();
-			
+			$('small.float-right').each(function(){
+				now = new Date().getTime();
+				difftime = (now - (new Date($(this).text()).getTime()))/1000; //取得差距秒數
+				var hours = Math.floor(difftime / 3600);
+				var minutes = Math.floor((difftime / 60) % 60);
+				var seconds = Math.floor((difftime % 60) % 60);
+					if(hours>0){
+						$(this).text(hours + "小時 " + minutes + "分鐘前");
+					}else if(minutes>0){
+						$(this).text(minutes + "分鐘 " + seconds + "秒前");
+					}else{
+						$(this).text(seconds + " 秒前");
+					}
+			})
 		})
 		$('div.email-item').on('mousedown',function(){
 			$.post('MessageServlet',{
@@ -199,9 +214,9 @@
 			$('h1.email-content-title').text(
 					$(this).find('h4.email-subject').text());
 			$('p.email-content-subtitle > a').text(
-					$(this).find('h5.email-name').text());
+					$(this).find('span.send-account').text());
 			$('p.email-content-subtitle > span').text(
-					$(this).find('span.email-time').text());
+					$.format.date($(this).find('span.email-time').text(),"yyyy-MM-dd HH:mm:ss"));
 			$('div.email-content-body').html(
 					$(this).find('div.email-real').html().replace(/\n/g, "<br>"));
 		})

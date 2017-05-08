@@ -91,7 +91,7 @@
       	</c:when>
       	<c:when test="${!empty ShopLoginOK}">
       	<div class="collapse navbar-collapse" style="margin-top: 25px;">
-   			 <button type="button" class="btn btn-success my-2 my-sm-0 btn-lg">	
+   			 <button type="button" class="btn btn-warning my-2 my-sm-0 btn-lg">	
    					<img class="uk-border-rounded" style="height: 30px; width: 30px;margin-top:0px;margin-right: 5px;" src="${pageContext.servletContext.contextPath}/init/getImage?id=${ShopLoginOK.shopAccount}&type=AccountImg">
      	 			<span style="font-size: 20px;position: relative;top: 3px;">${ShopLoginOK.shopName}</span>
 		      		<div uk-dropdown>

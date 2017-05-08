@@ -158,7 +158,19 @@ a {
     background: #eee;
 }
 .email-item-unread {
-    border-left: 6px solid #1b98f8;
+    border-left: 8px solid #1b98f8;
+}
+
+.email-item-normal {
+    border-left: 8px solid #FFC94C;
+}
+
+.email-item-din {
+    border-left: 8px solid #41CCB4;
+}
+
+.email-item-system {
+    border-left: 8px solid #40C365;
 }
 .email-item-hover {
     background: #e8e8e8;

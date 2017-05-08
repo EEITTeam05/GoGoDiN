@@ -35,23 +35,16 @@
 				<button class="primary-button pure-button" data-toggle='modal' data-target='#sendmail' id="send">寄信</button>
 				<div class="pure-menu">
 					<ul class="pure-menu-list">
-						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getNormalmail" class="pure-menu-link">一般信件
-								<span class="email-count"></span>
-						</a></li>
-						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getOrdermail" class="pure-menu-link">訂位通知
-						</a></li>
+						<li class="pure-menu-item"><a id="all" style="cursor:pointer" class="pure-menu-link">所有信件<span class="email-count"></span></a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">已加星號</a></li>
-						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getSystemmail" class="pure-menu-link">系統通知
-						</a></li>
 						<li class="pure-menu-item"><a href="#" class="pure-menu-link">送件匣</a></li>
-						<li class="pure-menu-item"><a href="<%=request.getContextPath()%>/MessageServlet?action=getMymail" class="pure-menu-link">所有信件</a></li>
 						<li class="pure-menu-heading">Labels</li>
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link"><span
+						<li class="pure-menu-item"><a id="normal" style="cursor:pointer" class="pure-menu-link"><span
 								class="email-label-personal"></span>一般</a></li>
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link"><span
+						<li class="pure-menu-item"><a id="din" style="cursor:pointer" class="pure-menu-link"><span
 								class="email-label-work"></span>訂位通知</a></li>
-						<li class="pure-menu-item"><a href="#" class="pure-menu-link"><span
-								class="email-label-travel"></span>重要通知</a></li>
+						<li class="pure-menu-item"><a id="system" style="cursor:pointer" class="pure-menu-link"><span
+								class="email-label-travel"></span>系統通知</a></li>
 					</ul>
 				</div>
 			</div>
@@ -63,11 +56,14 @@
 				<c:set var="string1" value="${VO.message}" />
 				<c:set var="string2" value="${fn:substring(string1 , 0, 20)}" />
 				<c:choose>
-					<c:when test="${!VO.isRead}">
-					<div class="email-item email-item-unread pure-g" id="${VO.mesId}" data-type="${VO.mailType}" style="cursor: pointer;">
+					<c:when test="${VO.mailType==2}">
+					<div class="email-item email-item-din pure-g" id="${VO.mesId}" data-type="din" style="cursor: pointer;">
+					</c:when>
+					<c:when test="${VO.mailType==3}">
+					<div class="email-item email-item-system pure-g" id="${VO.mesId}" data-type="system" style="cursor: pointer;">
 					</c:when>
 					<c:otherwise>
-					<div class="email-item pure-g" id="${VO.mesId}" data-type="${VO.mailType}" style="cursor: pointer;">
+					<div class="email-item email-item-normal pure-g" id="${VO.mesId}" data-type="normal" style="cursor: pointer;">
 					</c:otherwise>
 				</c:choose>
 					<c:choose>
@@ -88,7 +84,11 @@
 					<div class="pure-u-3-4">
 						<h5 class="email-name">${VO.sendAccount}</h5>
 						<span hidden class="email-time">${VO.sendtime}</span>
-						<h4 class="email-subject">${VO.title}</h4>
+						<h4 class="email-subject">${VO.title}
+						<c:if test="${!VO.isRead}">
+							<span class="label label-default float-right">New</span>
+						</c:if>
+						</h4>
 						<p class="email-desc">${string2}...</p>
 						<div hidden class="email-real">
 							${VO.message}
@@ -163,6 +163,7 @@
 			var menuButton = Y.one('.nav-menu-button'), nav = Y.one('#nav');
 
 			// Setting the active class name expands the menu vertically on small screens.
+			
 			menuButton.on('click', function(e) {
 				nav.toggleClass('active');
 			});
@@ -192,9 +193,8 @@
 		}).on('mouseup',function(){
 			getisReadCount();
 			$('div.email-item').removeClass('email-item-selected');
-			$(this).attr({
-				'class' : 'email-item email-item-selected pure-g'
-			});
+			$(this).find('span.label-default').prop('hidden',true);
+			$(this).addClass('email-item-selected');
 			$('#main').removeAttr('hidden');
 			$('h1.email-content-title').text(
 					$(this).find('h4.email-subject').text());
@@ -257,6 +257,17 @@
 				swal("信件已寄出!","","success");
 			});
 		});
+		$('a.pure-menu-link').mouseenter(function(){
+			
+		})
+		$('#all').on('click',function(){
+			var type = $('div.email-item').slideDown('fast');
+		})
+		$('ul.pure-menu-list > li:gt(3) > a').on('click',function(){
+			typeid =  $(this).attr('id');
+			var type = $('div.email-item[data-type!='+typeid+']').slideUp('fast');
+			var type = $('div.email-item[data-type='+typeid+']').slideDown('fast');
+		})
 	</script>
 
 

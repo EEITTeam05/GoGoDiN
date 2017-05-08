@@ -37,7 +37,7 @@
 				<th>刊登人數</th>
 				<th>照片</th>
 			</tr>
-			<c:forEach var="listRest" items="${listRest }" >
+			<c:forEach var="listRest" items="${listRest}" >
 				<tr align='center' valign='middle' >
 					<td>${listRest.restName }</td>
 					<td>${listRest.restTel }</td>
@@ -46,7 +46,8 @@
 					<td>${listRest.restStart }</td>
 					<td>${listRest.restEnd }</td>
 					<td>${listRest.restNum }</td>
-					<td><img src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(listRest.restImage) }" width="300" ></td>
+					
+					<td><img src="${pageContext.servletContext.contextPath}/init/getImage?type=Rest&restname=${listRest.restName}" width="300" ></td>
 					<td>
 						<form method="post" action="ShopServlet">
 							<input type="submit" value="修改">

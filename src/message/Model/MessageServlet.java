@@ -61,42 +61,6 @@ public class MessageServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
 			rd.forward(request, response);
 			return;
-		}else if("getNormalmail".equals(action)){
-			List<MessageVO> list = msrv.getReceive(Account);
-			List<MessageVO> listtype2 = new ArrayList<>();
-			for(MessageVO messageVO : list){
-				if(messageVO.getMailType()==1){
-					listtype2.add(messageVO);
-				}
-			}
-			request.setAttribute("list", listtype2);
-			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
-			rd.forward(request, response);
-			return;
-		}else if("getOrdermail".equals(action)){
-			List<MessageVO> list = msrv.getReceive(Account);
-			List<MessageVO> listtype2 = new ArrayList<>();
-			for(MessageVO messageVO : list){
-				if(messageVO.getMailType()==2){
-					listtype2.add(messageVO);
-				}
-			}
-			request.setAttribute("list", listtype2);
-			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
-			rd.forward(request, response);
-			return;
-		}else if("getSystemmail".equals(action)){
-			List<MessageVO> list = msrv.getReceive(Account);
-			List<MessageVO> listtype2 = new ArrayList<>();
-			for(MessageVO messageVO : list){
-				if(messageVO.getMailType()==3){
-					listtype2.add(messageVO);
-				}
-			}
-			request.setAttribute("list", listtype2);
-			RequestDispatcher rd = request.getRequestDispatcher("mailnew.jsp");
-			rd.forward(request, response);
-			return;
 		}
 		if("getIsRead".equals(action)){
 						/* 判斷查信件者身分 */
@@ -115,7 +79,7 @@ public class MessageServlet extends HttpServlet {
 	 * 
 	 * 
 	 * mailType 1= 一般寄信     2= 訂位通知(業主寄給會員)  3= 系統通知(管理者寄給業主)  
-	 *            ********     *********************     **********************
+	 *            ********   ****************    ******************
 	 *
 	 *
 	 */        
@@ -160,5 +124,6 @@ public class MessageServlet extends HttpServlet {
 		}else if("updateisRead".equals(action)){
 			msgsrv.updateIsRead(new Integer(MessageId));
 		}
+		
 	}
 }

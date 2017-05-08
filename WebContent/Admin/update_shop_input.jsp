@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../css/sweetalert.css">
 <title>修改資料</title>
 </head>
 <body>
@@ -62,10 +63,77 @@
 			<input type="hidden" name="shopIdd" value="${shopVO.shopIdd}">
 		</form>
 	</c:if>
+	<script src="../js/sweetalert.min.js"></script>
 	<script
 		src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$('option[value="${shopVO.status}"]').attr('selected','selected');
+		
+		$("#select1").change(function(){
+			if($(this).val()=="1"){
+				swal({
+					  title: "確定要停權嗎?",
+					  text: "請輸入停權原因:",
+					  type: "input",
+					  showCancelButton: true,
+					  closeOnConfirm: false,
+					  animation: "slide-from-top",
+					  inputPlaceholder: "請輸入文字"
+					},
+					function(inputValue){
+					  if (inputValue === false) {
+						  $('option[value="0"]').prop('selected', true);						
+						  return false;
+						  }
+					  
+					  if (inputValue === "") {
+					    swal.showInputError("You need to write something!");
+					    return false
+					  }						  
+					  swal("成功!", "You wrote: " + inputValue, "success");
+					  
+					  $.post("../MailServlet",{
+							"action":"stopPower",
+						    "email":"${shopVO.shopEmail}",  
+						    "text":inputValue
+						    },
+						)
+					});
+				}
+			
+			if($(this).val()=="0"){
+				swal({
+					  title: "確定要恢復業者權限嗎?",
+					  text: "請輸入恢復權限原因:",
+					  type: "input",
+					  showCancelButton: true,
+					  closeOnConfirm: false,
+					  animation: "slide-from-top",
+					  inputPlaceholder: "請輸入文字"
+					},
+					function(inputValue){
+					  if (inputValue === false) { 						
+							$('option[value="1"]').prop('selected', true);						
+							 return false		  
+					  }
+					  if (inputValue === "") {
+					    swal.showInputError("請輸入文字!");
+					    return false
+					  }
+					  
+					  swal("寄出!", "訊息是: " + inputValue, "success");
+					  
+					  $.post("../MailServlet",{
+						"action":"restorePower",
+					    "email":"${shopVO.shopEmail}",  
+					    "text":inputValue
+					    },)
+					  
+					});
+		         };
+			
+		});	
+		
 	</script>
 </body>
 
